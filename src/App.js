@@ -14,6 +14,8 @@ import EmployeeLeaves from './pages/employee/EmployeeLeaves';
 import TimeTracking from './pages/employee/TimeTracking';
 import AttendanceHistory from './pages/employee/AttendanceHistory';
 import WorkHistory from './pages/admin/WorkHistory';
+import KPIManagement from './pages/admin/KPIManagement';
+import EmployeeKPI from './pages/employee/EmployeeKPI';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -88,6 +90,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/kpi"
+            element={
+              <ProtectedRoute role="admin">
+                <KPIManagement />
+              </ProtectedRoute>
+            }
+          />
           
           {/* Employee Routes */}
           <Route
@@ -119,6 +129,14 @@ function App() {
             element={
               <ProtectedRoute role="employee">
                 <AttendanceHistory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employee/kpi"
+            element={
+              <ProtectedRoute role="employee">
+                <EmployeeKPI />
               </ProtectedRoute>
             }
           />

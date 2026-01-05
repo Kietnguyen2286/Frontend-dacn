@@ -114,12 +114,12 @@ const TimeTracking = () => {
 
         {/* Today Stats */}
         {isCheckedIn && (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8 rounded-lg">
-            <div className="flex items-center space-x-4">
-              <Calendar className="w-8 h-8 text-yellow-600" />
+          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <Calendar className="w-6 h-6 text-yellow-600" />
               <div>
-                <p className="font-semibold text-gray-800">Đang làm việc</p>
-                <p className="text-gray-600">
+                <p className="text-sm font-semibold text-gray-800">Đang làm việc</p>
+                <p className="text-xs text-gray-600">
                   Bắt đầu lúc: {checkInTime?.toLocaleTimeString('vi-VN')} - 
                   Thời gian: {todayHours} giờ
                 </p>
@@ -129,7 +129,7 @@ const TimeTracking = () => {
         )}
 
         {/* Week Summary */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-800">Tổng Kết Tuần Này</h2>
             <div className="text-right">
