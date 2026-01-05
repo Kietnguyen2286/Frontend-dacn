@@ -12,13 +12,17 @@ import {
   History,
   Briefcase,
   Target,
-  MessageCircle
+  MessageCircle,
+  Menu,
+  X
 } from 'lucide-react';
+import { useState } from 'react';
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -46,47 +50,75 @@ const Sidebar = () => {
       ];
 
   return (
-    <div className="bg-gray-800 text-white w-64 min-h-screen flex flex-col">
-      <div className="p-6 border-b border-gray-700">
-        <h2 className="text-xl font-bold">Quản Lý Nhân Viên</h2>
-        <p className="text-sm text-gray-400 mt-1">{user?.name}</p>
-        <p className="text-xs text-gray-500">
-          {user?.role === 'admin' ? 'Quản trị viên' : 'Nhân viên'}
-        </p>
+    <>
+      <div className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-800 text-white min-h-screen flex flex-col shadow-2xl`}>
+        <div className="p-6 border-b border-indigo-500 flex items-center justify-between">
+          {isOpen && (
+            <div className="animate-slideIn">
+              <h2 className="text-lg font-bold bg-gradient-to-r from-blue-200 to-indigo-100 bg-clip-text text-transparent">Quản Lý</h2>
+              <p className="text-xs text-indigo-200 mt-1 truncate">{user?.name}</p>
+            </div>
+          )}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-1 hover:bg-indigo-500 rounded-lg transition-all duration-200"
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+
+        <nav className="flex-1 p-3 space-y-2 overflow-y-auto">
+          {menuItems.map((item, idx) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 transform hover:scale-105 ${
+                  isActive 
+                    ? 'bg-white text-indigo-700 shadow-lg font-semibold' 
+                    : 'hover:bg-indigo-500 text-indigo-100'
+                }`}
+                style={{
+                  animationDelay: `${idx * 50}ms`
+                }}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {isOpen && <span className="truncate">{item.label}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-3 border-t border-indigo-500">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105"
+          >
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {isOpen && <span>Đăng Xuất</span>}
+          </button>
+        </div>
       </div>
 
-      <nav className="flex-1 p-4">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center space-x-3 p-3 rounded-lg mb-2 transition ${
-                isActive 
-                  ? 'bg-blue-600 text-white' 
-                  : 'hover:bg-gray-700 text-gray-300'
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="p-4 border-t border-gray-700">
-        <button
-          onClick={handleLogout}
-          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 w-full text-left text-gray-300"
-        >
-          <LogOut className="w-5 h-5" />
-          <span>Đăng Xuất</span>
-        </button>
-      </div>
-    </div>
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .animate-slideIn {
+          animation: slideIn 0.3s ease-out;
+        }
+      `}</style>
+    </>
   );
 };
 
