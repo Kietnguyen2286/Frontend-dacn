@@ -16,6 +16,7 @@ import AttendanceHistory from './pages/employee/AttendanceHistory';
 import WorkHistory from './pages/admin/WorkHistory';
 import KPIManagement from './pages/admin/KPIManagement';
 import EmployeeKPI from './pages/employee/EmployeeKPI';
+import ChatbotSupport from './pages/ChatbotSupport';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -137,6 +138,14 @@ function App() {
             element={
               <ProtectedRoute role="employee">
                 <EmployeeKPI />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/support/chatbot"
+            element={
+              <ProtectedRoute>
+                <ChatbotSupport />
               </ProtectedRoute>
             }
           />

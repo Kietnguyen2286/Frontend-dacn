@@ -11,7 +11,8 @@ import {
   Clock,
   History,
   Briefcase,
-  Target
+  Target,
+  MessageCircle
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -33,6 +34,7 @@ const Sidebar = () => {
         { path: '/admin/salary', icon: DollarSign, label: 'Lương Thưởng' },
         { path: '/admin/work-history', icon: Briefcase, label: 'Lịch Sử Công Tác' },
         { path: '/admin/kpi', icon: Target, label: 'Quản Lý KPI' },
+        { path: '/support/chatbot', icon: MessageCircle, label: 'Chatbot Hỗ trợ' },
       ]
     : [
         { path: '/employee', icon: LayoutDashboard, label: 'Dashboard' },
@@ -40,6 +42,7 @@ const Sidebar = () => {
         { path: '/employee/time-tracking', icon: Clock, label: 'Chấm Công' },
         { path: '/employee/attendance-history', icon: History, label: 'Lịch Sử Chấm Công' },
         { path: '/employee/kpi', icon: Target, label: 'KPI Của Tôi' },
+        { path: '/support/chatbot', icon: MessageCircle, label: 'Chatbot Hỗ trợ' },
       ];
 
   return (
