@@ -9,7 +9,7 @@ const EmployeeList = () => {
       id: 1, 
       name: 'Nguyễn Văn A', 
       employeeId: 'EMP001', 
-      position: 'Developer', 
+      position: 'Senior Developer', 
       department: 'IT',
       email: 'nguyenvana@example.com',
       phone: '0912345678'
@@ -18,7 +18,7 @@ const EmployeeList = () => {
       id: 2, 
       name: 'Trần Thị B', 
       employeeId: 'EMP002', 
-      position: 'Designer', 
+      position: 'UI/UX Designer', 
       department: 'Design',
       email: 'tranthib@example.com',
       phone: '0987654321'
@@ -27,10 +27,118 @@ const EmployeeList = () => {
       id: 3, 
       name: 'Lê Văn C', 
       employeeId: 'EMP003', 
-      position: 'Manager', 
+      position: 'Project Manager', 
       department: 'Management',
       email: 'levanc@example.com',
       phone: '0923456789'
+    },
+    { 
+      id: 4, 
+      name: 'Phạm Thị D', 
+      employeeId: 'EMP004', 
+      position: 'Backend Developer', 
+      department: 'IT',
+      email: 'phamthid@example.com',
+      phone: '0934567890'
+    },
+    { 
+      id: 5, 
+      name: 'Hoàng Văn E', 
+      employeeId: 'EMP005', 
+      position: 'Frontend Developer', 
+      department: 'IT',
+      email: 'hoangvane@example.com',
+      phone: '0945678901'
+    },
+    { 
+      id: 6, 
+      name: 'Vũ Thị F', 
+      employeeId: 'EMP006', 
+      position: 'QA Tester', 
+      department: 'IT',
+      email: 'vuthif@example.com',
+      phone: '0956789012'
+    },
+    { 
+      id: 7, 
+      name: 'Đỗ Văn G', 
+      employeeId: 'EMP007', 
+      position: 'DevOps Engineer', 
+      department: 'IT',
+      email: 'dovang@example.com',
+      phone: '0967890123'
+    },
+    { 
+      id: 8, 
+      name: 'Bùi Thị H', 
+      employeeId: 'EMP008', 
+      position: 'Graphic Designer', 
+      department: 'Design',
+      email: 'buithih@example.com',
+      phone: '0978901234'
+    },
+    { 
+      id: 9, 
+      name: 'Đinh Văn I', 
+      employeeId: 'EMP009', 
+      position: 'HR Manager', 
+      department: 'HR',
+      email: 'dinhvani@example.com',
+      phone: '0989012345'
+    },
+    { 
+      id: 10, 
+      name: 'Mai Thị K', 
+      employeeId: 'EMP010', 
+      position: 'Marketing Manager', 
+      department: 'Marketing',
+      email: 'maithik@example.com',
+      phone: '0990123456'
+    },
+    { 
+      id: 11, 
+      name: 'Lý Văn L', 
+      employeeId: 'EMP011', 
+      position: 'Sales Executive', 
+      department: 'Sales',
+      email: 'lyvanl@example.com',
+      phone: '0901234567'
+    },
+    { 
+      id: 12, 
+      name: 'Trương Thị M', 
+      employeeId: 'EMP012', 
+      position: 'Accountant', 
+      department: 'Finance',
+      email: 'truongthim@example.com',
+      phone: '0912345670'
+    },
+    { 
+      id: 13, 
+      name: 'Phan Văn N', 
+      employeeId: 'EMP013', 
+      position: 'Business Analyst', 
+      department: 'IT',
+      email: 'phanvann@example.com',
+      phone: '0923456701'
+    },
+    { 
+      id: 14, 
+      name: 'Cao Thị O', 
+      employeeId: 'EMP014', 
+      position: 'Product Owner', 
+      department: 'Management',
+      email: 'caothio@example.com',
+      phone: '0934567012'
+    },
+    { 
+      id: 15, 
+      name: 'Tô Văn P', 
+      employeeId: 'EMP015', 
+      position: 'Full Stack Developer', 
+      department: 'IT',
+      email: 'tovanp@example.com',
+      phone: '0945670123'
     },
   ]);
 

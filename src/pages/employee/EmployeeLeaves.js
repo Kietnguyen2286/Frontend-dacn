@@ -31,6 +31,69 @@ const EmployeeLeaves = () => {
       reason: 'Việc cá nhân',
       status: 'pending'
     },
+    {
+      id: 4,
+      type: 'Nghỉ việc riêng',
+      startDate: '2025-10-20',
+      endDate: '2025-10-20',
+      days: 1,
+      reason: 'Đi khám bệnh định kỳ',
+      status: 'approved'
+    },
+    {
+      id: 5,
+      type: 'Nghỉ phép',
+      startDate: '2025-09-10',
+      endDate: '2025-09-15',
+      days: 6,
+      reason: 'Nghỉ hè cùng gia đình',
+      status: 'approved'
+    },
+    {
+      id: 6,
+      type: 'Nghỉ ốm',
+      startDate: '2025-08-05',
+      endDate: '2025-08-07',
+      days: 3,
+      reason: 'Sốt cao, đau đầu',
+      status: 'approved'
+    },
+    {
+      id: 7,
+      type: 'Nghỉ phép',
+      startDate: '2026-01-20',
+      endDate: '2026-01-25',
+      days: 6,
+      reason: 'Về quê nghỉ Tết',
+      status: 'pending'
+    },
+    {
+      id: 8,
+      type: 'Nghỉ việc riêng',
+      startDate: '2025-07-15',
+      endDate: '2025-07-15',
+      days: 1,
+      reason: 'Làm thủ tục hành chính',
+      status: 'approved'
+    },
+    {
+      id: 9,
+      type: 'Nghỉ phép',
+      startDate: '2025-06-01',
+      endDate: '2025-06-05',
+      days: 5,
+      reason: 'Tham dự đám cưới bạn bè',
+      status: 'approved'
+    },
+    {
+      id: 10,
+      type: 'Nghỉ ốm',
+      startDate: '2025-05-10',
+      endDate: '2025-05-11',
+      days: 2,
+      reason: 'Đau dạ dày',
+      status: 'approved'
+    },
   ]);
 
   const [showModal, setShowModal] = useState(false);

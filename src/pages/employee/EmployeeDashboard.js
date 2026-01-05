@@ -9,7 +9,7 @@ const EmployeeDashboard = () => {
   const stats = [
     { 
       title: 'Nghỉ Phép Còn Lại', 
-      value: '12', 
+      value: '14', 
       icon: Calendar, 
       color: 'bg-blue-500',
       unit: 'ngày'
@@ -41,6 +41,8 @@ const EmployeeDashboard = () => {
     { id: 1, type: 'Nghỉ phép', date: '15/12/2025 - 20/12/2025', days: 6, status: 'approved' },
     { id: 2, type: 'Nghỉ ốm', date: '05/11/2025 - 06/11/2025', days: 2, status: 'approved' },
     { id: 3, type: 'Nghỉ phép', date: '10/01/2026 - 12/01/2026', days: 3, status: 'pending' },
+    { id: 4, type: 'Nghỉ phép', date: '20/01/2026 - 25/01/2026', days: 6, status: 'pending' },
+    { id: 5, type: 'Nghỉ việc riêng', date: '20/10/2025', days: 1, status: 'approved' },
   ];
 
   return (

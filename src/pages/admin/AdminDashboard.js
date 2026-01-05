@@ -6,31 +6,31 @@ const AdminDashboard = () => {
   const stats = [
     { 
       title: 'Tổng Nhân Viên', 
-      value: '45', 
+      value: '15', 
       icon: Users, 
       color: 'bg-blue-500',
-      change: '+5 tháng này'
+      change: '+3 tháng này'
     },
     { 
       title: 'Đơn Nghỉ Phép', 
-      value: '12', 
+      value: '18', 
       icon: Calendar, 
       color: 'bg-yellow-500',
-      change: '8 chờ duyệt'
+      change: '6 chờ duyệt'
     },
     { 
       title: 'Chi Phí Tháng Này', 
-      value: '125M', 
+      value: '142M', 
       icon: DollarSign, 
       color: 'bg-green-500',
-      change: '+15% so với tháng trước'
+      change: '+8% so với tháng trước'
     },
     { 
-      title: 'Nhiệm Vụ Hoàn Thành', 
-      value: '87%', 
+      title: 'Lương Đã Thanh Toán', 
+      value: '89%', 
       icon: CheckCircle, 
       color: 'bg-purple-500',
-      change: 'Tốt'
+      change: '13/15 nhân viên'
     },
   ];
 
@@ -38,6 +38,11 @@ const AdminDashboard = () => {
     { id: 1, name: 'Nguyễn Văn A', type: 'Nghỉ phép', date: '10/01 - 12/01', status: 'pending' },
     { id: 2, name: 'Trần Thị B', type: 'Nghỉ ốm', date: '08/01 - 09/01', status: 'approved' },
     { id: 3, name: 'Lê Văn C', type: 'Nghỉ phép', date: '15/01 - 20/01', status: 'pending' },
+    { id: 4, name: 'Phạm Thị D', type: 'Nghỉ việc riêng', date: '07/01', status: 'approved' },
+    { id: 5, name: 'Hoàng Văn E', type: 'Nghỉ phép', date: '20/01 - 25/01', status: 'pending' },
+    { id: 6, name: 'Vũ Thị F', type: 'Nghỉ ốm', date: '05/01 - 06/01', status: 'approved' },
+    { id: 7, name: 'Đỗ Văn G', type: 'Nghỉ phép', date: '12/01 - 14/01', status: 'pending' },
+    { id: 8, name: 'Bùi Thị H', type: 'Nghỉ việc riêng', date: '09/01', status: 'pending' },
   ];
 
   return (

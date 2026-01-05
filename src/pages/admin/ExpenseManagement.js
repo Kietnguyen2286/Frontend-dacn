@@ -9,7 +9,7 @@ const ExpenseManagement = () => {
       category: 'Văn phòng phẩm',
       amount: 5000000,
       date: '05/01/2026',
-      description: 'Mua máy in, giấy A4',
+      description: 'Mua máy in, giấy A4, bút viết',
       status: 'approved'
     },
     {
@@ -25,8 +25,104 @@ const ExpenseManagement = () => {
       category: 'Marketing',
       amount: 15000000,
       date: '03/01/2026',
-      description: 'Chi phí quảng cáo Facebook',
+      description: 'Chi phí quảng cáo Facebook Ads',
       status: 'pending'
+    },
+    {
+      id: 4,
+      category: 'Đào tạo',
+      amount: 12000000,
+      date: '02/01/2026',
+      description: 'Khóa học React Advanced cho team Dev',
+      status: 'approved'
+    },
+    {
+      id: 5,
+      category: 'Văn phòng phẩm',
+      amount: 3500000,
+      date: '04/01/2026',
+      description: 'Mua bàn ghế văn phòng mới',
+      status: 'approved'
+    },
+    {
+      id: 6,
+      category: 'Marketing',
+      amount: 20000000,
+      date: '06/01/2026',
+      description: 'Chi phí quảng cáo Google Ads',
+      status: 'pending'
+    },
+    {
+      id: 7,
+      category: 'Khác',
+      amount: 6000000,
+      date: '01/01/2026',
+      description: 'Thuê dịch vụ vệ sinh văn phòng',
+      status: 'approved'
+    },
+    {
+      id: 8,
+      category: 'Điện nước',
+      amount: 7500000,
+      date: '01/01/2026',
+      description: 'Tiền internet và điện thoại',
+      status: 'approved'
+    },
+    {
+      id: 9,
+      category: 'Đào tạo',
+      amount: 8000000,
+      date: '03/01/2026',
+      description: 'Workshop về UI/UX Design',
+      status: 'approved'
+    },
+    {
+      id: 10,
+      category: 'Marketing',
+      amount: 18000000,
+      date: '05/01/2026',
+      description: 'Tổ chức sự kiện khách hàng',
+      status: 'pending'
+    },
+    {
+      id: 11,
+      category: 'Văn phòng phẩm',
+      amount: 4200000,
+      date: '04/01/2026',
+      description: 'Mua laptop phụ kiện',
+      status: 'approved'
+    },
+    {
+      id: 12,
+      category: 'Khác',
+      amount: 10000000,
+      date: '02/01/2026',
+      description: 'Bảo hiểm văn phòng',
+      status: 'approved'
+    },
+    {
+      id: 13,
+      category: 'Đào tạo',
+      amount: 15000000,
+      date: '06/01/2026',
+      description: 'Khóa học AWS Cloud Practitioner',
+      status: 'pending'
+    },
+    {
+      id: 14,
+      category: 'Marketing',
+      amount: 9000000,
+      date: '04/01/2026',
+      description: 'In tờ rơi, banner quảng cáo',
+      status: 'approved'
+    },
+    {
+      id: 15,
+      category: 'Khác',
+      amount: 5500000,
+      date: '05/01/2026',
+      description: 'Sửa chữa máy lạnh văn phòng',
+      status: 'approved'
     },
   ]);
 

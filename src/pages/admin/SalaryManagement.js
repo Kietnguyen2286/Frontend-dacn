@@ -37,6 +37,138 @@ const SalaryManagement = () => {
       month: '01/2026',
       status: 'pending'
     },
+    {
+      id: 4,
+      employeeId: 'EMP004',
+      employeeName: 'Phạm Thị D',
+      baseSalary: 22000000,
+      bonus: 4000000,
+      deduction: 0,
+      total: 26000000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 5,
+      employeeId: 'EMP005',
+      employeeName: 'Hoàng Văn E',
+      baseSalary: 23000000,
+      bonus: 4500000,
+      deduction: 0,
+      total: 27500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 6,
+      employeeId: 'EMP006',
+      employeeName: 'Vũ Thị F',
+      baseSalary: 18000000,
+      bonus: 2500000,
+      deduction: 0,
+      total: 20500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 7,
+      employeeId: 'EMP007',
+      employeeName: 'Đỗ Văn G',
+      baseSalary: 26000000,
+      bonus: 5500000,
+      deduction: 0,
+      total: 31500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 8,
+      employeeId: 'EMP008',
+      employeeName: 'Bùi Thị H',
+      baseSalary: 19000000,
+      bonus: 3000000,
+      deduction: 0,
+      total: 22000000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 9,
+      employeeId: 'EMP009',
+      employeeName: 'Đinh Văn I',
+      baseSalary: 28000000,
+      bonus: 6000000,
+      deduction: 0,
+      total: 34000000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 10,
+      employeeId: 'EMP010',
+      employeeName: 'Mai Thị K',
+      baseSalary: 27000000,
+      bonus: 5500000,
+      deduction: 0,
+      total: 32500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 11,
+      employeeId: 'EMP011',
+      employeeName: 'Lý Văn L',
+      baseSalary: 21000000,
+      bonus: 4000000,
+      deduction: 500000,
+      total: 24500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 12,
+      employeeId: 'EMP012',
+      employeeName: 'Trương Thị M',
+      baseSalary: 24000000,
+      bonus: 4500000,
+      deduction: 0,
+      total: 28500000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 13,
+      employeeId: 'EMP013',
+      employeeName: 'Phan Văn N',
+      baseSalary: 23500000,
+      bonus: 4200000,
+      deduction: 0,
+      total: 27700000,
+      month: '01/2026',
+      status: 'paid'
+    },
+    {
+      id: 14,
+      employeeId: 'EMP014',
+      employeeName: 'Cao Thị O',
+      baseSalary: 29000000,
+      bonus: 6500000,
+      deduction: 0,
+      total: 35500000,
+      month: '01/2026',
+      status: 'pending'
+    },
+    {
+      id: 15,
+      employeeId: 'EMP015',
+      employeeName: 'Tô Văn P',
+      baseSalary: 24500000,
+      bonus: 5000000,
+      deduction: 0,
+      total: 29500000,
+      month: '01/2026',
+      status: 'pending'
+    },
   ]);
 
   const totalSalary = salaries.reduce((sum, s) => sum + s.total, 0);

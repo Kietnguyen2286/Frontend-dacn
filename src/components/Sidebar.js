@@ -7,7 +7,10 @@ import {
   Calendar, 
   DollarSign, 
   Wallet, 
-  LogOut 
+  LogOut,
+  Clock,
+  History,
+  Briefcase
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -27,10 +30,13 @@ const Sidebar = () => {
         { path: '/admin/leaves', icon: Calendar, label: 'Nghỉ Phép' },
         { path: '/admin/expenses', icon: Wallet, label: 'Chi Phí' },
         { path: '/admin/salary', icon: DollarSign, label: 'Lương Thưởng' },
+        { path: '/admin/work-history', icon: Briefcase, label: 'Lịch Sử Công Tác' },
       ]
     : [
         { path: '/employee', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/employee/leaves', icon: Calendar, label: 'Nghỉ Phép' },
+        { path: '/employee/time-tracking', icon: Clock, label: 'Chấm Công' },
+        { path: '/employee/attendance-history', icon: History, label: 'Lịch Sử Chấm Công' },
       ];
 
   return (
