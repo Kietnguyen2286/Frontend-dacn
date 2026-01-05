@@ -1,19 +1,65 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
-import { Target, TrendingUp, Award, Calendar, AlertCircle } from 'lucide-react';
+import { Target, TrendingUp, Award, Calendar, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 const EmployeeKPI = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('Q1-2026');
+  const [expanded, setExpanded] = useState({});
 
   const kpiHistory = [
     {
       period: 'Q1-2026',
       kpis: [
-        { name: 'Hoàn thành dự án', target: 5, actual: 4, unit: 'dự án', weight: 30, score: 80 },
-        { name: 'Chất lượng code', target: 90, actual: 88, unit: '%', weight: 25, score: 98 },
-        { name: 'Đúng deadline', target: 95, actual: 90, unit: '%', weight: 20, score: 95 },
-        { name: 'Hỗ trợ team', target: 80, actual: 85, unit: '%', weight: 15, score: 100 },
-        { name: 'Học tập nâng cao', target: 2, actual: 2, unit: 'khóa học', weight: 10, score: 100 }
+        {
+          name: 'Hoàn thành dự án',
+          target: 5,
+          targetDesc: 'Hoàn thành 5 dự án: Website thương mại điện tử, App mobile banking, Hệ thống CRM, API Gateway, Dashboard analytics',
+          actual: 4,
+          actualDesc: 'Hoàn thành 4 dự án: Website thương mại điện tử, App mobile banking, Hệ thống CRM, API Gateway (Dashboard analytics pending)',
+          unit: 'dự án',
+          weight: 30,
+          score: 80
+        },
+        {
+          name: 'Chất lượng code',
+          target: 90,
+          targetDesc: 'Đạt 90% code review passed, coverage trên 80%, bug density < 5/1000LOC',
+          actual: 88,
+          actualDesc: '88% code review passed, coverage 78%, bug density 6/1000LOC',
+          unit: '%',
+          weight: 25,
+          score: 98
+        },
+        {
+          name: 'Đúng deadline',
+          target: 95,
+          targetDesc: 'Hoàn thành 95% tasks đúng hạn, không có delay > 2 ngày',
+          actual: 90,
+          actualDesc: '90% tasks đúng hạn, một số thay đổi yêu cầu gây trễ 1-2 ngày',
+          unit: '%',
+          weight: 20,
+          score: 95
+        },
+        {
+          name: 'Hỗ trợ team',
+          target: 80,
+          targetDesc: 'Support 20 PRs/tháng, giải đáp 15 issue, tổ chức 2 buổi chia sẻ',
+          actual: 85,
+          actualDesc: 'Support 22 PRs, giải đáp 18 issue, tổ chức 2 buổi chia sẻ',
+          unit: '%',
+          weight: 15,
+          score: 100
+        },
+        {
+          name: 'Học tập nâng cao',
+          target: 2,
+          targetDesc: 'Hoàn thành 2 khóa học nội bộ về React/Node',
+          actual: 2,
+          actualDesc: 'Hoàn thành 2 khóa: React nâng cao, Testing với Jest',
+          unit: 'khóa',
+          weight: 10,
+          score: 100
+        }
       ],
       totalScore: 92,
       rating: 'Tốt',
@@ -24,11 +70,56 @@ const EmployeeKPI = () => {
     {
       period: 'Q4-2025',
       kpis: [
-        { name: 'Hoàn thành dự án', target: 4, actual: 5, unit: 'dự án', weight: 30, score: 100 },
-        { name: 'Chất lượng code', target: 90, actual: 92, unit: '%', weight: 25, score: 100 },
-        { name: 'Đúng deadline', target: 95, actual: 94, unit: '%', weight: 20, score: 99 },
-        { name: 'Hỗ trợ team', target: 80, actual: 82, unit: '%', weight: 15, score: 100 },
-        { name: 'Học tập nâng cao', target: 2, actual: 1, unit: 'khóa học', weight: 10, score: 50 }
+        {
+          name: 'Hoàn thành dự án',
+          target: 4,
+          targetDesc: 'Hoàn thành 4 dự án chính trong quý',
+          actual: 5,
+          actualDesc: 'Hoàn thành 5 dự án, tăng 1 dự án so với kế hoạch',
+          unit: 'dự án',
+          weight: 30,
+          score: 100
+        },
+        {
+          name: 'Chất lượng code',
+          target: 90,
+          targetDesc: 'Code review pass trên 90%',
+          actual: 92,
+          actualDesc: '92% code review passed',
+          unit: '%',
+          weight: 25,
+          score: 100
+        },
+        {
+          name: 'Đúng deadline',
+          target: 95,
+          targetDesc: 'Hoàn thành 95% tasks đúng hạn',
+          actual: 94,
+          actualDesc: '94% tasks đúng hạn',
+          unit: '%',
+          weight: 20,
+          score: 99
+        },
+        {
+          name: 'Hỗ trợ team',
+          target: 80,
+          targetDesc: 'Hỗ trợ team và review PR đều đặn',
+          actual: 82,
+          actualDesc: 'Hỗ trợ 82% yêu cầu team',
+          unit: '%',
+          weight: 15,
+          score: 100
+        },
+        {
+          name: 'Học tập nâng cao',
+          target: 2,
+          targetDesc: 'Hoàn thành 2 buổi học nội bộ',
+          actual: 1,
+          actualDesc: 'Tham gia 1 buổi, thiếu 1 buổi do bận dự án',
+          unit: 'buổi',
+          weight: 10,
+          score: 50
+        }
       ],
       totalScore: 94,
       rating: 'Tốt',
@@ -39,11 +130,56 @@ const EmployeeKPI = () => {
     {
       period: 'Q3-2025',
       kpis: [
-        { name: 'Hoàn thành dự án', target: 4, actual: 4, unit: 'dự án', weight: 30, score: 100 },
-        { name: 'Chất lượng code', target: 85, actual: 90, unit: '%', weight: 25, score: 100 },
-        { name: 'Đúng deadline', target: 90, actual: 88, unit: '%', weight: 20, score: 98 },
-        { name: 'Hỗ trợ team', target: 75, actual: 80, unit: '%', weight: 15, score: 100 },
-        { name: 'Học tập nâng cao', target: 1, actual: 2, unit: 'khóa học', weight: 10, score: 100 }
+        {
+          name: 'Hoàn thành dự án',
+          target: 4,
+          targetDesc: 'Hoàn thành các mục tiêu dự án theo scope',
+          actual: 4,
+          actualDesc: 'Đã hoàn thành đúng scope',
+          unit: 'dự án',
+          weight: 30,
+          score: 100
+        },
+        {
+          name: 'Chất lượng code',
+          target: 85,
+          targetDesc: 'Quality score >85%',
+          actual: 90,
+          actualDesc: 'Quality score 90%',
+          unit: '%',
+          weight: 25,
+          score: 100
+        },
+        {
+          name: 'Đúng deadline',
+          target: 90,
+          targetDesc: 'Hoàn thành 90% tasks đúng hạn',
+          actual: 88,
+          actualDesc: '88% tasks đúng hạn',
+          unit: '%',
+          weight: 20,
+          score: 98
+        },
+        {
+          name: 'Hỗ trợ team',
+          target: 75,
+          targetDesc: 'Hỗ trợ team, mentoring',
+          actual: 80,
+          actualDesc: 'Hỗ trợ và mentoring tốt',
+          unit: '%',
+          weight: 15,
+          score: 100
+        },
+        {
+          name: 'Học tập nâng cao',
+          target: 1,
+          targetDesc: 'Hoàn thành 1 khóa chuyên môn',
+          actual: 2,
+          actualDesc: 'Hoàn thành 2 khóa',
+          unit: 'khóa',
+          weight: 10,
+          score: 100
+        }
       ],
       totalScore: 99,
       rating: 'Xuất sắc',
@@ -79,6 +215,10 @@ const EmployeeKPI = () => {
 
   const avgScore = (kpiHistory.reduce((sum, item) => sum + item.totalScore, 0) / kpiHistory.length).toFixed(1);
   const trend = kpiHistory[0].totalScore - kpiHistory[1].totalScore;
+
+  const toggleExpand = (index) => {
+    setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
+  };
 
   return (
     <Layout>
@@ -116,9 +256,7 @@ const EmployeeKPI = () => {
               <TrendingUp className={`w-10 h-10 ${trend >= 0 ? 'text-green-500' : 'text-red-500'}`} />
             </div>
             <p className="text-gray-600 text-sm mb-1">Xu Hướng</p>
-            <p className={`text-3xl font-bold ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {trend > 0 ? '+' : ''}{trend}
-            </p>
+            <p className={`text-3xl font-bold ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>{trend > 0 ? '+' : ''}{trend}</p>
           </div>
         </div>
 
@@ -127,11 +265,7 @@ const EmployeeKPI = () => {
           <div className="flex items-center space-x-4">
             <Calendar className="w-5 h-5 text-gray-400" />
             <label className="text-sm font-medium text-gray-700">Kỳ đánh giá:</label>
-            <select
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            >
+            <select value={selectedPeriod} onChange={(e) => setSelectedPeriod(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
               {kpiHistory.map((item) => (
                 <option key={item.period} value={item.period}>{item.period}</option>
               ))}
@@ -139,70 +273,61 @@ const EmployeeKPI = () => {
           </div>
         </div>
 
-        {/* Current KPI Details */}
+        {/* Current KPI Details (compact) */}
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-800">Đánh Giá {currentKPI.period}</h2>
-              <p className="text-sm text-gray-600 mt-1">
-                Người đánh giá: {currentKPI.manager} | Ngày: {currentKPI.reviewDate}
-              </p>
+              <p className="text-sm text-gray-600 mt-1">Người đánh giá: {currentKPI.manager} | Ngày: {currentKPI.reviewDate}</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-gray-600 mb-1">Tổng điểm</p>
-              <p className={`text-5xl font-bold ${getScoreColor(currentKPI.totalScore)}`}>
-                {currentKPI.totalScore}
-              </p>
-              <span className={`inline-block mt-2 px-4 py-2 rounded-full text-sm font-medium border-2 ${getRatingColor(currentKPI.rating)}`}>
-                {currentKPI.rating}
-              </span>
+              <p className={`text-5xl font-bold ${getScoreColor(currentKPI.totalScore)}`}>{currentKPI.totalScore}</p>
+              <span className={`inline-block mt-2 px-4 py-2 rounded-full text-sm font-medium border-2 ${getRatingColor(currentKPI.rating)}`}>{currentKPI.rating}</span>
             </div>
           </div>
 
-          {/* KPI Items */}
-          <div className="space-y-4 mb-6">
-            {currentKPI.kpis.map((kpi, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-lg">{kpi.name}</h3>
-                    <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
-                      <span>Mục tiêu: <strong>{kpi.target} {kpi.unit}</strong></span>
-                      <span>Thực tế: <strong className={kpi.actual >= kpi.target ? 'text-green-600' : 'text-red-600'}>
-                        {kpi.actual} {kpi.unit}
-                      </strong></span>
-                      <span>Trọng số: <strong>{kpi.weight}%</strong></span>
+          {/* Compact KPI list with expand for details */}
+          <div className="space-y-3">
+            {currentKPI.kpis.map((kpi, index) => {
+              const achieved = kpi.actual >= kpi.target;
+              return (
+                <div key={index} className="border border-gray-200 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${achieved ? 'bg-green-500' : 'bg-red-500'}`} />
+                      <div>
+                        <div className="font-semibold text-gray-800">{kpi.name}</div>
+                        <div className="text-xs text-gray-500">Mục tiêu: {kpi.target} {kpi.unit} • Thực tế: <span className={achieved ? 'text-green-600' : 'text-red-600'}>{kpi.actual} {kpi.unit}</span></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className={`text-lg font-bold ${getScoreColor(kpi.score)}`}>{kpi.score}</div>
+                      <button onClick={() => toggleExpand(index)} className="p-1 rounded hover:bg-gray-100">
+                        {expanded[index] ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      </button>
                     </div>
                   </div>
-                  <div className="text-right ml-4">
-                    <p className={`text-3xl font-bold ${getScoreColor(kpi.score)}`}>
-                      {kpi.score}
-                    </p>
-                    <p className="text-xs text-gray-500">điểm</p>
-                  </div>
+
+                  {expanded[index] && (
+                    <div className="mt-3 bg-gray-50 p-3 rounded">
+                      <p className="text-sm text-gray-700 font-semibold mb-1">Mô tả Mục tiêu</p>
+                      <p className="text-sm text-gray-600 mb-2">{kpi.targetDesc}</p>
+                      <p className="text-sm text-gray-700 font-semibold mb-1">Mô tả Thực tế</p>
+                      <p className="text-sm text-gray-600 mb-2">{kpi.actualDesc}</p>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div>Trọng số: {kpi.weight}%</div>
+                        <div>Tỷ lệ hoàn thành: {Math.min(Math.round((kpi.actual / kpi.target) * 100), 100)}%</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                {/* Progress Bar */}
-                <div className="relative w-full bg-gray-200 rounded-full h-4">
-                  <div
-                    className={`h-4 rounded-full transition-all flex items-center justify-end pr-2 ${
-                      kpi.score >= 95 ? 'bg-green-500' :
-                      kpi.score >= 85 ? 'bg-blue-500' :
-                      kpi.score >= 70 ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}
-                    style={{ width: `${Math.min((kpi.actual / kpi.target) * 100, 100)}%` }}
-                  >
-                    <span className="text-white text-xs font-bold">
-                      {((kpi.actual / kpi.target) * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Feedback */}
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mt-6">
             <div className="flex items-start space-x-3">
               <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
               <div>
@@ -224,23 +349,12 @@ const EmployeeKPI = () => {
                   <p className="text-sm text-gray-600">{item.reviewDate}</p>
                 </div>
                 <div className="text-center">
-                  <p className={`text-3xl font-bold ${getScoreColor(item.totalScore)}`}>
-                    {item.totalScore}
-                  </p>
-                  <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium border ${getRatingColor(item.rating)}`}>
-                    {item.rating}
-                  </span>
+                  <p className={`text-3xl font-bold ${getScoreColor(item.totalScore)}`}>{item.totalScore}</p>
+                  <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium border ${getRatingColor(item.rating)}`}>{item.rating}</span>
                 </div>
                 <div className="w-32">
                   <div className="relative w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      className={`h-3 rounded-full ${
-                        item.totalScore >= 95 ? 'bg-green-500' :
-                        item.totalScore >= 85 ? 'bg-blue-500' :
-                        item.totalScore >= 70 ? 'bg-yellow-500' : 'bg-red-500'
-                      }`}
-                      style={{ width: `${item.totalScore}%` }}
-                    ></div>
+                    <div className={`h-3 rounded-full ${item.totalScore >= 95 ? 'bg-green-500' : item.totalScore >= 85 ? 'bg-blue-500' : item.totalScore >= 70 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${item.totalScore}%` }}></div>
                   </div>
                 </div>
               </div>
