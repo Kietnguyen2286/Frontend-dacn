@@ -1,0 +1,106 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Login from './pages/Login';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import EmployeeList from './pages/admin/EmployeeList';
+import AddEmployee from './pages/admin/AddEmployee';
+import EmployeeDetail from './pages/admin/EmployeeDetail';
+import LeaveManagement from './pages/admin/LeaveManagement';
+import ExpenseManagement from './pages/admin/ExpenseManagement';
+import SalaryManagement from './pages/admin/SalaryManagement';
+import EmployeeDashboard from './pages/employee/EmployeeDashboard';
+import EmployeeLeaves from './pages/employee/EmployeeLeaves';
+import ProtectedRoute from './components/ProtectedRoute';
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/employees"
+            element={
+              <ProtectedRoute role="admin">
+                <EmployeeList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/employees/add"
+            element={
+              <ProtectedRoute role="admin">
+                <AddEmployee />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/employees/:id"
+            element={
+              <ProtectedRoute role="admin">
+                <EmployeeDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/leaves"
+            element={
+              <ProtectedRoute role="admin">
+                <LeaveManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/expenses"
+            element={
+              <ProtectedRoute role="admin">
+                <ExpenseManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/salary"
+            element={
+              <ProtectedRoute role="admin">
+                <SalaryManagement />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Employee Routes */}
+          <Route
+            path="/employee"
+            element={
+              <ProtectedRoute role="employee">
+                <EmployeeDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employee/leaves"
+            element={
+              <ProtectedRoute role="employee">
+                <EmployeeLeaves />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route path="/" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;
