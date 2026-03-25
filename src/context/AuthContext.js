@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import ApiService from '../services/ApiService';
 
 const AuthContext = createContext(null);
 
@@ -13,46 +14,43 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Check if user is logged in (from localStorage)
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
+    const savedToken = localStorage.getItem('token');
+    if (savedUser && savedToken) {
       setUser(JSON.parse(savedUser));
     }
     setLoading(false);
   }, []);
 
-  const login = (username, password) => {
-    // Mock authentication - replace with actual API call
-    if (username === 'admin' && password === 'admin123') {
-      const userData = {
-        id: 1,
-        username: 'admin',
-        role: 'admin',
-        name: 'Administrator',
-      };
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      return { success: true, user: userData };
-    } else if (username === 'employee' && password === 'emp123') {
-      const userData = {
-        id: 2,
-        username: 'employee',
-        role: 'employee',
-        name: 'John Doe',
-        employeeId: 'EMP001',
-      };
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      return { success: true, user: userData };
+  const login = async (username, password) => {
+    try {
+      const response = await ApiService.login(username, password);
+      if (response.success) {
+        setUser(response.user);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', response.token);
+        setError(null);
+        return { success: true, user: response.user };
+      } else {
+        setError(response.message);
+        return { success: false, message: response.message };
+      }
+    } catch (err) {
+      const errorMsg = 'Failed to login. Please try again.';
+      setError(errorMsg);
+      return { success: false, message: errorMsg };
     }
-    return { success: false, message: 'Invalid credentials' };
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setError(null);
   };
 
   const value = {
@@ -60,6 +58,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     loading,
+    error,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
