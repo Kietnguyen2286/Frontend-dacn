@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, Briefcase, DollarSign } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, DollarSign } from 'lucide-react';
 
 const EmployeeDetail = () => {
   const { id } = useParams();
