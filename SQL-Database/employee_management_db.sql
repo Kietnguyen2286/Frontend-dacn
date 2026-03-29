@@ -1,7 +1,3 @@
--- Create Database
-CREATE DATABASE IF NOT EXISTS employee_management_db;
-USE employee_management_db;
-
 -- Users Table
 CREATE TABLE IF NOT EXISTS users (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -123,8 +119,8 @@ CREATE INDEX idx_work_history_employee_id ON work_history(employee_id);
 
 -- Insert sample admin user (password: admin123)
 INSERT INTO users (username, password_hash, name, role) 
-VALUES ('admin', '$2a$10$7n4vvGrV8zQKyGdKpX5teuXvLfz7.UbQnN5jKZJqc6Z8hF5dJ8Pte', 'Administrator', 'admin');
+VALUES ('admin', '$2a$10$2QakONQqxZfpi5QhTH/AR.PFoaL9talll2u3Nym4uK3g9/qP/X/UW', 'Administrator', 'admin');
 
 -- Insert sample employee user (password: emp123)
 INSERT INTO users (username, password_hash, name, role) 
-VALUES ('employee', '$2a$10$YT7ZN4R8Q1L2K3M4N5O6P7Q8R9S0T1U2V3W4X5Y6Z7A8B9C0D1E2F', 'John Doe', 'employee');
+VALUES ('employee', '$2a$10$oR8lp3RvjrQXnr4j6jdJq.giSS1l6b5JJ2MD94iORHWChjN1x1MXW', 'John Doe', 'employee');
