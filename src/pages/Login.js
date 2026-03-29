@@ -17,15 +17,29 @@ const Login = () => {
     }
   }, [user, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    const result = login(username, password);
-    if (result.success) {
-      navigate(`/${result.user.role}`);
-    } else {
-      setError(result.message);
+    // Validation trước khi gửi
+    if (!username.trim()) {
+      setError('Vui lòng nhập tên đăng nhập');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Vui lòng nhập mật khẩu');
+      return;
+    }
+
+    try {
+      const result = await login(username, password);
+      if (result.success) {
+        navigate(`/${result.user.role}`);
+      } else {
+        setError(result.message || 'Đăng nhập thất bại');
+      }
+    } catch (err) {
+      setError(err.message || 'Lỗi không xác định');
     }
   };
 

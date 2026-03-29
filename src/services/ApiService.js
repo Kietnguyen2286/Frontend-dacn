@@ -8,7 +8,11 @@ const ApiService = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Đăng nhập thất bại');
+    }
+    return data;
   },
 
   register: async (username, password, name, role) => {
