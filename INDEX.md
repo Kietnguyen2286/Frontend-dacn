@@ -25,7 +25,8 @@ Your complete guide to all documentation files. **Start with the file that match
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System design and diagrams
 
 ### Deployment
-- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete deployment manual
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Complete deployment manual (Heroku & Railway)
+- **[RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)** - 👈 **Recommended: Detailed Railway.app setup guide**
 - **[SETUP.md](./SETUP.md)** - Setup checklist
 
 ### API & Data
@@ -42,10 +43,12 @@ Your complete guide to all documentation files. **Start with the file that match
 3. Follow Step 1.2 & 1.3
 4. Read: [Backend-dacn/README.md](./Backend-dacn/README.md) if needed
 
-### Path 2: I want to deploy to production
-1. Read: [ACTION_PLAN.md](./ACTION_PLAN.md) - Phase 2
-2. Follow all steps
-3. Reference: [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for details
+### Path 2: I want to deploy to production (Railway)
+1. Read: [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md) - Complete Railway setup
+2. Create Railway account & create MySQL database
+3. Deploy backend via GitHub
+4. Deploy frontend to Vercel
+5. Test login
 
 ### Path 3: I want to understand the architecture
 1. Read: [PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)

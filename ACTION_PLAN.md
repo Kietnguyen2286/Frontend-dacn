@@ -138,11 +138,29 @@ mysql -h your_cloud_host -u username -p employee_management_db < SQL-Database/em
 
 **Result:** Your frontend is live at `https://your-name.vercel.app` 🎉
 
-### Step 2.3: Create Heroku Project (15 min)
+### Step 2.3: Deploy Backend - Choose ONE Option
+
+#### **Option A: Railway (Recommended ⭐ - Easiest)**
+
+**👉 Full guide: [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)**
+
+Quick Steps:
+1. Go to [railway.app](https://railway.app)
+2. Sign up with GitHub
+3. New Project → Deploy from GitHub
+4. Select your repository & `Backend-dacn` folder
+5. Set environment variables:
+   - `DATABASE_URL`: Railway MySQL connection string
+   - `JWT_SECRET`: Random secret key
+6. Deploy (2-5 minutes)
+7. Copy public URL
+
+#### **Option B: Heroku (Alternative)**
+
 1. Go to [heroku.com](https://heroku.com)
 2. Sign up (or login)
 3. Create new app: "New" → "Create new app"
-4. Enter app name: `employee-api-prod` (or your choice)
+4. Enter app name: `employee-api-prod`
 5. Click "Create App"
 
 **Connect GitHub:**
@@ -179,47 +197,74 @@ NODE_ENV: production
 
 **Wait 2-3 minutes for deployment...**
 
-**Result:** Backend is live at `https://employee-api-prod.herokuapp.com/api` 🎉
+**Get Backend URL:**
+- **Railway:** Dashboard → Settings → Public URL (copy it)
+- **Heroku:** `https://your-app-name.herokuapp.com`
+
+**Result:** Backend is live! 🎉
 
 ### Step 2.4: Update Frontend API URL (5 min)
-1. Go to Vercel Dashboard
-2. Select your project
-3. Go to "Settings" → "Environment Variables"
-4. Create variable:
+
+1. Get your backend public URL from:
+   - **Railway Dashboard** → Settings → Public URL
+   - **Heroku Dashboard** → app url (then add `/api`)
+
+2. Go to Vercel Dashboard
+3. Select your frontend project
+4. Go to "Settings" → "Environment Variables"
+5. Create/Edit variable:
    - Name: `REACT_APP_API_URL`
-   - Value: `https://employee-api-prod.herokuapp.com/api`
-5. Click "Save"
-6. Go to "Deployments" tab
-7. Click the 3-dots on latest deployment
-8. Click "Redeploy"
+   - Value: `https://your-backend-url/api` (Railway) or `https://your-app-name.herokuapp.com/api` (Heroku)
+6. Click "Save"
+7. Go to "Deployments" tab
+8. Redeploy latest deployment
 
 **Wait 1-2 minutes for deployment...**
 
 **Test:**
-- Open `https://your-name.vercel.app`
+- Open your frontend Vercel URL
 - Login with `admin` / `admin123`
+- All pages should work! ✅
 - Dashboard should load ✓
 
 ---
 
 ## Phase 3: Automated Deployment (NEXT - 30 min)
 
-### Step 3.1: Add GitHub Secrets
+### Step 3.1: GitHub Actions CI/CD Setup
+
+✅ Workflow files are already in `.github/workflows/`
+
+**For Railway Deployment:**
+- Workflow file: `.github/workflows/deploy-backend-railway.yml`
+- Triggered on every push to `main` branch
+- Automatically builds and deploys backend
+
+**For Vercel Deployment:**
+- GitHub integration handles auto-deploy
+- Every push to `main` redeploys frontend
+
+**For Heroku Deployment (if using Heroku instead):**
+- Workflow file: `.github/workflows/deploy-backend-heroku.yml`
+- Add `HEROKU_API_KEY` & `HEROKU_APP_NAME` to GitHub secrets
+
+### Step 3.2: Add GitHub Secrets (if needed)
+
 GitHub repo → Settings → Secrets and variables → Actions
 
-**For Vercel:**
-```
-VERCEL_TOKEN = Get from Vercel account settings
-VERCEL_ORG_ID = Your Vercel org ID
-VERCEL_PROJECT_ID = Your project ID (from .vercel/project.json)
-REACT_APP_API_URL = https://your-backend-url.com/api
-```
+**For Railway:**
+- Railway GitHub integration usually auto-detects
+- Check Railway dashboard for any manual setup needed
 
-**For Heroku:**
+**For Heroku (if applicable):**
 ```
 HEROKU_API_KEY = Get from Heroku account settings
-HEROKU_APP_NAME = employee-api-prod
+HEROKU_APP_NAME = your-app-name
 ```
+
+**For Vercel:**
+- Usually auto-connected to GitHub
+- Check Vercel project settings if needed
 
 ### Step 3.2: Enable GitHub Actions
 1. Go to your GitHub repo

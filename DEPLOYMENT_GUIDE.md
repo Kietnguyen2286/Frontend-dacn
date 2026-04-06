@@ -1,11 +1,23 @@
 # Employee Management System - Complete Setup Guide
 
+## 📜 Hướng dẫn Deployment
+
+**Để tránh tài liệu quá dài, chúng tôi chia thành các hướng dẫn riêng:**
+
+| Nền tảng | Hướng dẫn Chi tiết |
+|----------|-------------------|
+| **Railway** (Recommended) | 👉 [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md) |
+| **Heroku** | Xem phần dưới |
+| **Vercel (Frontend)** | Xem phần dưới |
+
+---
+
 ## Project Structure
 
 ```
 .
 ├── Frontend-dacn/           # React Frontend (Deploy to Vercel)
-├── Backend-dacn/            # Node.js/Express API (Deploy to Heroku/Railway)
+├── Backend-dacn/            # Node.js/Express API (Deploy to Railway/Heroku)
 └── SQL-Database/            # MySQL Database Schema
 ```
 
@@ -15,7 +27,30 @@
 - MySQL Server running locally
 - Git account
 - Vercel account (for frontend)
-- Heroku or Railway account (for backend)
+- Railway or Heroku account (for backend)
+
+---
+
+## 🚀 Quick Deploy Path
+
+### Quickest Way (Railway + Vercel)
+
+```bash
+# Step 1: Push code to GitHub
+git add .
+git commit -m "deploy"
+git push
+
+# Step 2: Go to railway.app → Deploy Backend
+# (See RAILWAY_DEPLOYMENT.md for details)
+
+# Step 3: Go to vercel.com → Deploy Frontend
+# Set REACT_APP_API_URL to Railway backend URL
+```
+
+**Total time: ~15 minutes** ⚡
+
+---
 
 ## 1. Database Setup
 
@@ -33,16 +68,20 @@ mysql -u root -p < SQL-Database/employee_management_db.sql
 mysql -u root -p -e "USE employee_management_db; SHOW TABLES;"
 ```
 
-### Production (Recommended Services)
-- **AWS RDS MySQL**
-- **Azure Database for MySQL**
-- **DigitalOcean Managed Database**
-- **Linode Database**
+### Production Database Options
 
-Get connection string format:
+**Recommended:**
+- 🏆 **Railway MySQL** - Easiest, integrated with backend
+- ⭐ **AWS RDS MySQL** - Most reliable
+- 🟦 **Azure Database for MySQL** - Great with Microsoft stack
+- 💧 **DigitalOcean Managed Database** - Good price/performance
+
+**Connection String Format:**
 ```
-username:password@host:port/database_name
+mysql://user:password@host:port/database_name
 ```
+
+---
 
 ## 2. Frontend Setup & Deployment (Vercel)
 
@@ -54,74 +93,59 @@ npm install
 npm start
 ```
 
-The app runs on `http://localhost:3000`
+Frontend runs on: `http://localhost:3000`
 
 ### Deploy to Vercel
 
 **Option 1: Using Vercel CLI**
 
 ```bash
-# Install Vercel CLI globally
 npm install -g vercel
-
-# Login to Vercel
-vercel login
-
-# Deploy
 cd Frontend-dacn
+vercel login
 vercel --prod
 ```
 
-**Option 2: Using GitHub Integration**
+**Option 2: GitHub Integration (Recommended)**
 
 1. Push code to GitHub
 2. Go to [vercel.com](https://vercel.com)
-3. Click "New Project"
-4. Select your GitHub repository
-5. Configure environment variables:
-   - `REACT_APP_API_URL`: Your backend API URL
-6. Click "Deploy"
+3. Click **"Add New..."** → **"Project"**
+4. Select your repository
+5. Add environment variable:
+   - Name: `REACT_APP_API_URL`
+   - Value: Your backend URL (e.g., `https://your-api.up.railway.app/api`)
+6. Click **"Deploy"**
 
-**Environment Variables for Vercel:**
+**Environment Variables:**
 ```
-REACT_APP_API_URL=https://your-backend-domain.com/api
+REACT_APP_API_URL=https://your-backend-url.com/api
 ```
 
-## 3. Backend Setup & Deployment
+---
 
-### Local Development
+## 3. Backend Deployment
 
+### Option A: Railway (Recommended ⭐)
+
+**👉 Full guide: [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md)**
+
+**Quick summary:**
 ```bash
-cd Backend-dacn
-npm install
-cp .env.example .env
+1. railway.app → New Project
+2. Deploy from GitHub (select Backend-dacn)
+3. Add DATABASE_URL & JWT_SECRET variables
+4. Deploy (auto from GitHub)
+5. Get public URL
 ```
 
-Edit `.env`:
-```
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=employee_management_db
-JWT_SECRET=your_jwt_secret_key_here
-NODE_ENV=development
-```
-
-Start the server:
-```bash
-npm run dev
-```
-
-API runs on `http://localhost:5000/api`
-
-### Deploy to Heroku
+### Option B: Heroku
 
 **Prerequisites:**
-- Heroku CLI installed
 - Heroku account
+- Heroku CLI installed
 
-**Steps:**
+**Steps:****
 
 1. Create Heroku app:
 ```bash
