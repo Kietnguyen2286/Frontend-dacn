@@ -15,7 +15,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// Configure CORS
+app.use(cors({
+  origin: [
+    'https://testdacn.vercel.app',
+    'http://localhost:3000'  // For development
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
