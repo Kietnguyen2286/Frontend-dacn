@@ -1,0 +1,72 @@
+{
+  "name": "KPI",
+  "item": [
+    {
+      "name": "KPI | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/kpi",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "kpi"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "KPI | Create requires token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employee_id\": 1,\n  \"metric\": \"Customer Satisfaction\",\n  \"target\": 95,\n  \"actual\": 90,\n  \"period\": \"2026-Q2\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/kpi",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "kpi"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

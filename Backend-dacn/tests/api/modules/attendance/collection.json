@@ -1,0 +1,64 @@
+{
+  "name": "Attendance",
+  "item": [
+    {
+      "name": "Attendance | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/attendance",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "attendance"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attendance | Check-in requires token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/attendance/checkin",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "attendance",
+            "checkin"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Salary",
+  "item": [
+    {
+      "name": "Salary | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/salary",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "salary"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salary | Update requires token",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"base_salary\": 1000,\n  \"allowances\": 50,\n  \"deductions\": 10\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/salary/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "salary",
+            "1"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

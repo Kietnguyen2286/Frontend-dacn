@@ -1,0 +1,69 @@
+{
+  "name": "Employees",
+  "item": [
+    {
+      "name": "Employees | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/employees",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "employees"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});",
+              "",
+              "pm.test('Message indicates missing token', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.message).to.eql('No token provided');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees | Get by id requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/employees/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "employees",
+            "1"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

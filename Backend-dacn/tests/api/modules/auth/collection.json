@@ -1,0 +1,93 @@
+{
+  "name": "Auth",
+  "item": [
+    {
+      "name": "Auth | Login requires username and password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Message is validation error', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.message).to.eql('Username and password required');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth | Register requires required fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"new-user\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test('Message is required-fields error', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.message).to.eql('All fields required');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

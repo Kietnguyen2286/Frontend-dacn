@@ -1,0 +1,72 @@
+{
+  "name": "Leaves",
+  "item": [
+    {
+      "name": "Leaves | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/leaves",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "leaves"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leaves | Create requires token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employee_id\": 1,\n  \"leave_type\": \"annual\",\n  \"start_date\": \"2026-04-12\",\n  \"end_date\": \"2026-04-14\",\n  \"reason\": \"Family event\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/leaves",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "leaves"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

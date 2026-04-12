@@ -1,0 +1,72 @@
+{
+  "name": "Expenses",
+  "item": [
+    {
+      "name": "Expenses | Get all requires token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/expenses",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "expenses"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expenses | Create requires token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employee_id\": 1,\n  \"amount\": 42.5,\n  \"description\": \"Taxi\",\n  \"category\": \"travel\",\n  \"date\": \"2026-04-12\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/expenses",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "expenses"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401', function () {",
+              "  pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

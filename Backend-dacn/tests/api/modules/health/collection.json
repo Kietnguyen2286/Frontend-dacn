@@ -1,0 +1,39 @@
+{
+  "name": "Health",
+  "item": [
+    {
+      "name": "Health | API is running",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Health payload includes status', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body).to.have.property('status');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

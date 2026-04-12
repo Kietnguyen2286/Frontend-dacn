@@ -1,0 +1,511 @@
+{
+    "id": "9566d14d-b4f6-4d57-9934-9e45ce018483",
+    "name": "Employee Management API - Modular Tests",
+    "timestamp": "2026-04-12T03:28:58.684451+00:00",
+    "collection_id": "6c5bd5c8-3f1e-4cfd-80cd-9c05055cce39",
+    "folder_id": 0,
+    "environment_id": "0",
+    "totalPass": 19,
+    "delay": 0,
+    "persist": true,
+    "status": "finished",
+    "startedAt": "2026-04-12T03:28:58.684451+00:00",
+    "totalFail": 0,
+    "results": [
+        {
+            "id": "28824de5-a134-416e-b887-8b599a7754d9",
+            "name": "Attendance | Get all requires token",
+            "url": "http://localhost:5000/api/attendance",
+            "time": 43,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                43
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "20162089-2551-4886-8f55-ba696667b882",
+            "name": "Attendance | Check-in requires token",
+            "url": "http://localhost:5000/api/attendance/checkin",
+            "time": 7,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                7
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "2aad1bdf-fd89-49f0-b161-0577001634a9",
+            "name": "Auth | Login requires username and password",
+            "url": "http://localhost:5000/api/auth/login",
+            "time": 20,
+            "responseCode": {
+                "code": 400,
+                "name": "Bad Request"
+            },
+            "tests": {
+                "Status code is 400": true,
+                "Message is validation error": true
+            },
+            "testPassFailCounts": {
+                "Status code is 400": {
+                    "pass": 1,
+                    "fail": 0
+                },
+                "Message is validation error": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                20
+            ],
+            "allTests": [
+                {
+                    "Status code is 400": true,
+                    "Message is validation error": true
+                }
+            ]
+        },
+        {
+            "id": "74be4274-0b99-49ad-aac2-aef5a2b1b367",
+            "name": "Auth | Register requires required fields",
+            "url": "http://localhost:5000/api/auth/register",
+            "time": 10,
+            "responseCode": {
+                "code": 400,
+                "name": "Bad Request"
+            },
+            "tests": {
+                "Status code is 400": true,
+                "Message is required-fields error": true
+            },
+            "testPassFailCounts": {
+                "Status code is 400": {
+                    "pass": 1,
+                    "fail": 0
+                },
+                "Message is required-fields error": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                10
+            ],
+            "allTests": [
+                {
+                    "Status code is 400": true,
+                    "Message is required-fields error": true
+                }
+            ]
+        },
+        {
+            "id": "bd45dd1e-96ca-4e13-be25-e3e39eefbf3e",
+            "name": "Employees | Get all requires token",
+            "url": "http://localhost:5000/api/employees",
+            "time": 5,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true,
+                "Message indicates missing token": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                },
+                "Message indicates missing token": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                5
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true,
+                    "Message indicates missing token": true
+                }
+            ]
+        },
+        {
+            "id": "222dbc6e-346c-4869-b42d-9283cdb0d439",
+            "name": "Employees | Get by id requires token",
+            "url": "http://localhost:5000/api/employees/1",
+            "time": 8,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                8
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "46bc486c-9f0b-4792-8df6-a3999a043b1a",
+            "name": "Expenses | Get all requires token",
+            "url": "http://localhost:5000/api/expenses",
+            "time": 10,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                10
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "11ad0ad3-951f-41bd-a0d7-bbba6838edae",
+            "name": "Expenses | Create requires token",
+            "url": "http://localhost:5000/api/expenses",
+            "time": 11,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                11
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "faead450-f427-4d8d-97bb-9af82669130e",
+            "name": "Health | API is running",
+            "url": "http://localhost:5000/api/health",
+            "time": 11,
+            "responseCode": {
+                "code": 200,
+                "name": "OK"
+            },
+            "tests": {
+                "Status code is 200": true,
+                "Health payload includes status": true
+            },
+            "testPassFailCounts": {
+                "Status code is 200": {
+                    "pass": 1,
+                    "fail": 0
+                },
+                "Health payload includes status": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                11
+            ],
+            "allTests": [
+                {
+                    "Status code is 200": true,
+                    "Health payload includes status": true
+                }
+            ]
+        },
+        {
+            "id": "d011f21e-92c5-460f-ab5f-17e3c14f0056",
+            "name": "KPI | Get all requires token",
+            "url": "http://localhost:5000/api/kpi",
+            "time": 7,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                7
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "59486b5e-8697-428d-a135-c5f3a41e7ca7",
+            "name": "KPI | Create requires token",
+            "url": "http://localhost:5000/api/kpi",
+            "time": 23,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                23
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "18d8f945-926d-4f57-b619-4e49e790ce98",
+            "name": "Leaves | Get all requires token",
+            "url": "http://localhost:5000/api/leaves",
+            "time": 10,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                10
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "a00763af-4526-4f85-ab53-c639d526f345",
+            "name": "Leaves | Create requires token",
+            "url": "http://localhost:5000/api/leaves",
+            "time": 8,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                8
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "a868f242-c1c6-4ff8-9909-985a85c175f1",
+            "name": "Salary | Get all requires token",
+            "url": "http://localhost:5000/api/salary",
+            "time": 4,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                4
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        },
+        {
+            "id": "cab3ac2a-e27e-4f67-a7fd-d6ee22f0c00d",
+            "name": "Salary | Update requires token",
+            "url": "http://localhost:5000/api/salary/1",
+            "time": 7,
+            "responseCode": {
+                "code": 401,
+                "name": "Unauthorized"
+            },
+            "tests": {
+                "Status code is 401": true
+            },
+            "testPassFailCounts": {
+                "Status code is 401": {
+                    "pass": 1,
+                    "fail": 0
+                }
+            },
+            "times": [
+                7
+            ],
+            "allTests": [
+                {
+                    "Status code is 401": true
+                }
+            ]
+        }
+    ],
+    "count": 1,
+    "totalTime": 184,
+    "collection": {
+        "requests": [
+            {
+                "id": "28824de5-a134-416e-b887-8b599a7754d9",
+                "method": "GET"
+            },
+            {
+                "id": "20162089-2551-4886-8f55-ba696667b882",
+                "method": "POST"
+            },
+            {
+                "id": "2aad1bdf-fd89-49f0-b161-0577001634a9",
+                "method": "POST"
+            },
+            {
+                "id": "74be4274-0b99-49ad-aac2-aef5a2b1b367",
+                "method": "POST"
+            },
+            {
+                "id": "bd45dd1e-96ca-4e13-be25-e3e39eefbf3e",
+                "method": "GET"
+            },
+            {
+                "id": "222dbc6e-346c-4869-b42d-9283cdb0d439",
+                "method": "GET"
+            },
+            {
+                "id": "46bc486c-9f0b-4792-8df6-a3999a043b1a",
+                "method": "GET"
+            },
+            {
+                "id": "11ad0ad3-951f-41bd-a0d7-bbba6838edae",
+                "method": "POST"
+            },
+            {
+                "id": "faead450-f427-4d8d-97bb-9af82669130e",
+                "method": "GET"
+            },
+            {
+                "id": "d011f21e-92c5-460f-ab5f-17e3c14f0056",
+                "method": "GET"
+            },
+            {
+                "id": "59486b5e-8697-428d-a135-c5f3a41e7ca7",
+                "method": "POST"
+            },
+            {
+                "id": "18d8f945-926d-4f57-b619-4e49e790ce98",
+                "method": "GET"
+            },
+            {
+                "id": "a00763af-4526-4f85-ab53-c639d526f345",
+                "method": "POST"
+            },
+            {
+                "id": "a868f242-c1c6-4ff8-9909-985a85c175f1",
+                "method": "GET"
+            },
+            {
+                "id": "cab3ac2a-e27e-4f67-a7fd-d6ee22f0c00d",
+                "method": "PUT"
+            }
+        ]
+    }
+}

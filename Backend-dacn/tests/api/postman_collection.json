@@ -1,0 +1,570 @@
+{
+  "info": {
+    "name": "Employee Management API - Modular Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Generated from tests/api/modules/*/collection.json"
+  },
+  "item": [
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Attendance | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attendance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attendance"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Attendance | Check-in requires token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attendance/checkin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attendance",
+                "checkin"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Auth | Login requires username and password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Message is validation error', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.message).to.eql('Username and password required');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Auth | Register requires required fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"new-user\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Message is required-fields error', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.message).to.eql('All fields required');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Employees | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Message indicates missing token', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.message).to.eql('No token provided');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Employees | Get by id requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employees/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Expenses",
+      "item": [
+        {
+          "name": "Expenses | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/expenses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Expenses | Create requires token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": 1,\n  \"amount\": 42.5,\n  \"description\": \"Taxi\",\n  \"category\": \"travel\",\n  \"date\": \"2026-04-12\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expenses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health | API is running",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Health payload includes status', function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KPI",
+      "item": [
+        {
+          "name": "KPI | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/kpi",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kpi"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "KPI | Create requires token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": 1,\n  \"metric\": \"Customer Satisfaction\",\n  \"target\": 95,\n  \"actual\": 90,\n  \"period\": \"2026-Q2\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/kpi",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "kpi"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Leaves",
+      "item": [
+        {
+          "name": "Leaves | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/leaves",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "leaves"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Leaves | Create requires token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": 1,\n  \"leave_type\": \"annual\",\n  \"start_date\": \"2026-04-12\",\n  \"end_date\": \"2026-04-14\",\n  \"reason\": \"Family event\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/leaves",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "leaves"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Salary",
+      "item": [
+        {
+          "name": "Salary | Get all requires token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "salary"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Salary | Update requires token",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"base_salary\": 1000,\n  \"allowances\": 50,\n  \"deductions\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/salary/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "salary",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    }
+  ]
+}

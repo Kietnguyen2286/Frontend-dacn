@@ -7,20 +7,31 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:unit:watch": "vitest --watch",
+    "test:api:build": "node tests/api/scripts/build-postman-collection.mjs",
+    "test:api:run": "npm run test:api:build ; python ../test/parse_newman.py tests/api/postman_collection.json -o tests/api"
   },
-  "keywords": ["employee", "management", "api"],
+  "keywords": [
+    "employee",
+    "management",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql2": "^3.6.5",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.3"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.6.5"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "newman": "^6.2.2",
+    "nodemon": "^3.0.2",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.4"
   }
 }
