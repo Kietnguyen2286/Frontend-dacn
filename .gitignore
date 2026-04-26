@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+# /build - COMMENTED OUT: Build folder is committed for Railway deployment
+# If you don't want to commit build folder, re-add this line and ensure Railway build process works
 
 # misc
 .DS_Store
