@@ -61,7 +61,7 @@ git push origin main
    - Railway sẽ auto-detect `Procfile` và `package.json`
    - ⚠️ **Quan trọng**: Đảm bảo là Frontend folder, không phải Backend!
 
-7. Click **"Create Service"**
+7. Click **"Create Service"**2
 
 8. Chờ Railway build (2-3 phút)
 
