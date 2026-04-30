@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Remove trailing slash from API_BASE_URL to avoid double slashes
+const API_BASE_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 // Debug logging
 if (typeof window !== 'undefined') {

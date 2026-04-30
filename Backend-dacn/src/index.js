@@ -18,8 +18,8 @@ const PORT = process.env.PORT || 5000;
 // Configure CORS
 app.use(cors({
   origin: [
-    'https://testdacn.vercel.app',
-    'https://ravishing-enjoyment-production.up.railway.app',  // Production frontend
+    'https://ravishing-enjoyment-production.up.railway.app',  // Current production frontend
+    'https://testdacn.vercel.app',  // Old Vercel frontend
     'http://localhost:3000',  // Development
     'http://localhost:3001'   // Alternative dev port
   ],
