@@ -14,7 +14,9 @@ import {
   Target,
   MessageCircle,
   Menu,
-  X
+  X,
+  User,
+  Settings
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -52,19 +54,47 @@ const Sidebar = () => {
   return (
     <>
       <div className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-800 text-white min-h-screen flex flex-col shadow-2xl`}>
-        <div className="p-6 border-b border-indigo-500 flex items-center justify-between">
+        {/* User Profile Section */}
+        <div className="p-4 border-b border-indigo-500">
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${isOpen ? 'space-x-3' : 'flex-col space-y-2'}`}>
+              <img 
+                src={`https://i.pravatar.cc/150?u=${user?.username}`}
+                alt={user?.name}
+                className="w-12 h-12 rounded-full border-2 border-white object-cover"
+              />
+              {isOpen && (
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-white truncate">{user?.name}</p>
+                  <p className="text-xs text-indigo-200 truncate capitalize">{user?.role}</p>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-1 hover:bg-indigo-500 rounded-lg transition-all duration-200"
+            >
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
           {isOpen && (
-            <div className="animate-slideIn">
-              <h2 className="text-lg font-bold bg-gradient-to-r from-blue-200 to-indigo-100 bg-clip-text text-transparent">Quản Lý</h2>
-              <p className="text-xs text-indigo-200 mt-1 truncate">{user?.name}</p>
+            <div className="mt-3 space-y-2">
+              <Link
+                to="/account"
+                className="flex items-center space-x-2 w-full p-2 rounded hover:bg-indigo-500 transition text-sm text-indigo-100 hover:text-white"
+              >
+                <Settings className="w-4 h-4" />
+                <span>Thông Tin Tài Khoản</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 w-full p-2 rounded hover:bg-red-500 transition text-sm text-indigo-100 hover:text-white"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Đăng Xuất</span>
+              </button>
             </div>
           )}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-1 hover:bg-indigo-500 rounded-lg transition-all duration-200"
-          >
-            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
 
         <nav className="flex-1 p-3 space-y-2 overflow-y-auto">
@@ -92,15 +122,17 @@ const Sidebar = () => {
           })}
         </nav>
 
-        <div className="p-3 border-t border-indigo-500">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105"
-          >
-            <LogOut className="w-5 h-5 flex-shrink-0" />
-            {isOpen && <span>Đăng Xuất</span>}
-          </button>
-        </div>
+        {!isOpen && (
+          <div className="p-3 border-t border-indigo-500">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105"
+              title="Đăng Xuất"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          </div>
+        )}
       </div>
 
       <style>{`

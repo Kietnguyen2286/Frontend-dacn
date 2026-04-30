@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
+import AccountManagement from './pages/AccountManagement';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import EmployeeList from './pages/admin/EmployeeList';
 import AddEmployee from './pages/admin/AddEmployee';
@@ -25,6 +26,16 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          
+          {/* Account Management - Available for all authenticated users */}
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <AccountManagement />
+              </ProtectedRoute>
+            }
+          />
           
           {/* Admin Routes */}
           <Route
