@@ -15,7 +15,6 @@ import {
   MessageCircle,
   Menu,
   X,
-  User,
   Settings
 } from 'lucide-react';
 import { useState } from 'react';
