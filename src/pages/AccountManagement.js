@@ -16,9 +16,14 @@ const AccountManagement = () => {
     role: user?.role || '',
   });
 
+  // Debug logs
+  console.log('📄 AccountManagement Component Rendered');
+  console.log('👤 User:', user);
+
   const avatarOptions = Array.from({ length: 30 }, (_, i) => 
     `https://i.pravatar.cc/150?img=${i}`
   );
+  console.log('🖼️ Avatar URL:', avatarOptions[selectedAvatar]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
