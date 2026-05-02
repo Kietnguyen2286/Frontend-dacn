@@ -14,8 +14,7 @@ import {
   Target,
   MessageCircle,
   Menu,
-  X,
-  Settings
+  X
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,9 +24,30 @@ const Sidebar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
+  // Get avatar from localStorage
+  const [selectedAvatar] = useState(() => {
+    const saved = localStorage.getItem('userAvatar');
+    return saved ? parseInt(saved) : 0;
+  });
+  const [customAvatarUrl] = useState(() => {
+    return localStorage.getItem('customAvatarUrl') || null;
+  });
+
+  const avatarOptions = Array.from({ length: 30 }, (_, i) => 
+    `https://i.pravatar.cc/150?img=${i}`
+  );
+
+  const getCurrentAvatarUrl = () => {
+    return customAvatarUrl || avatarOptions[selectedAvatar];
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleAvatarClick = () => {
+    navigate('/account');
   };
 
   const menuItems = user?.role === 'admin' 
@@ -57,16 +77,26 @@ const Sidebar = () => {
         <div className="p-4 border-b border-indigo-500">
           <div className="flex items-center justify-between">
             <div className={`flex items-center ${isOpen ? 'space-x-3' : 'flex-col space-y-2'}`}>
-              <img 
-                src={`https://i.pravatar.cc/150?u=${user?.username}`}
-                alt={user?.name}
-                className="w-12 h-12 rounded-full border-2 border-white object-cover"
-              />
+              <button
+                onClick={handleAvatarClick}
+                className="focus:outline-none hover:opacity-80 transition"
+                title="Click để xem thông tin tài khoản"
+              >
+                <img 
+                  src={getCurrentAvatarUrl()}
+                  alt={user?.name}
+                  className="w-12 h-12 rounded-full border-2 border-white object-cover cursor-pointer"
+                />
+              </button>
               {isOpen && (
-                <div className="min-w-0 flex-1">
+                <button
+                  onClick={handleAvatarClick}
+                  className="min-w-0 flex-1 text-left hover:opacity-80 transition"
+                  title="Click để xem thông tin tài khoản"
+                >
                   <p className="font-semibold text-white truncate">{user?.name}</p>
                   <p className="text-xs text-indigo-200 truncate capitalize">{user?.role}</p>
-                </div>
+                </button>
               )}
             </div>
             <button
@@ -76,24 +106,6 @@ const Sidebar = () => {
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
-          {isOpen && (
-            <div className="mt-3 space-y-2">
-              <Link
-                to="/account"
-                className="flex items-center space-x-2 w-full p-2 rounded hover:bg-indigo-500 transition text-sm text-indigo-100 hover:text-white"
-              >
-                <Settings className="w-4 h-4" />
-                <span>Thông Tin Tài Khoản</span>
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 w-full p-2 rounded hover:bg-red-500 transition text-sm text-indigo-100 hover:text-white"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Đăng Xuất</span>
-              </button>
-            </div>
-          )}
         </div>
 
         <nav className="flex-1 p-3 space-y-2 overflow-y-auto">
@@ -121,17 +133,17 @@ const Sidebar = () => {
           })}
         </nav>
 
-        {!isOpen && (
-          <div className="p-3 border-t border-indigo-500">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center justify-center p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105"
-              title="Đăng Xuất"
-            >
-              <LogOut className="w-5 h-5" />
-            </button>
-          </div>
-        )}
+        {/* Logout Button - Always visible at bottom */}
+        <div className="p-3 border-t border-indigo-500">
+          <button
+            onClick={handleLogout}
+            className={`w-full flex items-center ${isOpen ? 'space-x-3' : 'justify-center'} p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105`}
+            title="Đăng Xuất"
+          >
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {isOpen && <span>Đăng Xuất</span>}
+          </button>
+        </div>
       </div>
 
       <style>{`
