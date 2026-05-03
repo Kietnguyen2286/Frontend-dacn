@@ -6,8 +6,7 @@ import {
   Users, 
   Calendar, 
   DollarSign, 
-  Wallet, 
-  LogOut,
+  Wallet,
   Clock,
   History,
   Briefcase,
@@ -19,18 +18,18 @@ import {
 import { useState } from 'react';
 
 const Sidebar = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
   // Get avatar from localStorage
   const [selectedAvatar] = useState(() => {
-    const saved = localStorage.getItem('userAvatar');
+    const saved = localStorage.getItem(`userAvatar_${user?.username}`);
     return saved ? parseInt(saved) : 0;
   });
   const [customAvatarUrl] = useState(() => {
-    return localStorage.getItem('customAvatarUrl') || null;
+    return localStorage.getItem(`customAvatarUrl_${user?.username}`) || null;
   });
 
   const avatarOptions = Array.from({ length: 30 }, (_, i) => 
@@ -39,11 +38,6 @@ const Sidebar = () => {
 
   const getCurrentAvatarUrl = () => {
     return customAvatarUrl || avatarOptions[selectedAvatar];
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   const handleAvatarClick = () => {
@@ -132,18 +126,6 @@ const Sidebar = () => {
             );
           })}
         </nav>
-
-        {/* Logout Button - Always visible at bottom */}
-        <div className="p-3 border-t border-indigo-500">
-          <button
-            onClick={handleLogout}
-            className={`w-full flex items-center ${isOpen ? 'space-x-3' : 'justify-center'} p-3 rounded-lg hover:bg-red-500 text-indigo-100 hover:text-white transition-all duration-200 transform hover:scale-105`}
-            title="Đăng Xuất"
-          >
-            <LogOut className="w-5 h-5 flex-shrink-0" />
-            {isOpen && <span>Đăng Xuất</span>}
-          </button>
-        </div>
       </div>
 
       <style>{`

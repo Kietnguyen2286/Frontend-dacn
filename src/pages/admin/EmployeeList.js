@@ -208,12 +208,19 @@ const EmployeeList = () => {
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredEmployees = employees.filter(emp =>
     emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     emp.department.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const paginatedEmployees = filteredEmployees.slice(startIdx, endIdx);
 
   return (
     <Layout>
@@ -237,7 +244,10 @@ const EmployeeList = () => {
               type="text"
               placeholder="Tìm kiếm theo tên, mã NV, phòng ban..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -263,7 +273,7 @@ const EmployeeList = () => {
           <div className="overflow-y-auto max-h-96">
             <table className="min-w-full">
               <tbody className="divide-y divide-gray-200">
-                {filteredEmployees.map((employee) => (
+                {paginatedEmployees.map((employee) => (
                   <tr key={employee.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
                       <img 
@@ -303,6 +313,44 @@ const EmployeeList = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-between mt-6 p-4 bg-white rounded-lg shadow">
+          <div className="text-sm text-gray-600">
+            Hiển thị {startIdx + 1}-{Math.min(endIdx, filteredEmployees.length)} / {filteredEmployees.length} nhân viên
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Trước
+            </button>
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-2 rounded ${
+                    currentPage === page
+                      ? 'bg-blue-600 text-white'
+                      : 'border border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Sau
+            </button>
           </div>
         </div>
       </div>
