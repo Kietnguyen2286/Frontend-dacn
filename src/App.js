@@ -12,7 +12,6 @@ import ExpenseManagement from './pages/admin/ExpenseManagement';
 import SalaryManagement from './pages/admin/SalaryManagement';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import EmployeeLeaves from './pages/employee/EmployeeLeaves';
-import TimeTracking from './pages/employee/TimeTracking';
 import AttendanceHistory from './pages/employee/AttendanceHistory';
 import WorkHistory from './pages/admin/WorkHistory';
 import KPIManagement from './pages/admin/KPIManagement';
@@ -125,14 +124,6 @@ function App() {
             element={
               <ProtectedRoute role="employee">
                 <EmployeeLeaves />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employee/time-tracking"
-            element={
-              <ProtectedRoute role="employee">
-                <TimeTracking />
               </ProtectedRoute>
             }
           />

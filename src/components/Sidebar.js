@@ -7,7 +7,6 @@ import {
   Calendar, 
   DollarSign, 
   Wallet,
-  Clock,
   History,
   Briefcase,
   Target,
@@ -58,7 +57,6 @@ const Sidebar = () => {
     : [
         { path: '/employee', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/employee/leaves', icon: Calendar, label: 'Nghỉ Phép' },
-        { path: '/employee/time-tracking', icon: Clock, label: 'Chấm Công' },
         { path: '/employee/attendance-history', icon: History, label: 'Lịch Sử Chấm Công' },
         { path: '/employee/kpi', icon: Target, label: 'KPI Của Tôi' },
         { path: '/support/chatbot', icon: MessageCircle, label: 'Chatbot Hỗ trợ' },
