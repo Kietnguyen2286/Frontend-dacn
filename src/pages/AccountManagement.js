@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout';
-import { Camera, Save, X, Upload, LogOut, Edit2 } from 'lucide-react';
+import { Camera, Save, X, Upload, LogOut, Edit2, Lock } from 'lucide-react';
 
 const AccountManagement = () => {
   const { user, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
   const [selectedAvatar, setSelectedAvatar] = useState(() => {
     const saved = localStorage.getItem(`userAvatar_${user?.username}`);
     return saved ? parseInt(saved) : 0;
@@ -81,6 +88,48 @@ const AccountManagement = () => {
   const handleLogout = () => {
     logout();
     window.location.href = '/login';
+  };
+
+  const handlePasswordInputChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handlePasswordChange = () => {
+    // Validation
+    if (!passwordForm.currentPassword) {
+      setPasswordMessage('❌ Vui lòng nhập mật khẩu hiện tại');
+      return;
+    }
+    if (!passwordForm.newPassword) {
+      setPasswordMessage('❌ Vui lòng nhập mật khẩu mới');
+      return;
+    }
+    if (passwordForm.newPassword.length < 6) {
+      setPasswordMessage('❌ Mật khẩu mới phải có ít nhất 6 ký tự');
+      return;
+    }
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordMessage('❌ Mật khẩu xác nhận không khớp');
+      return;
+    }
+    if (passwordForm.currentPassword === passwordForm.newPassword) {
+      setPasswordMessage('❌ Mật khẩu mới phải khác với mật khẩu hiện tại');
+      return;
+    }
+
+    // Simulate password change (in real app, call API)
+    console.log('Changing password...');
+    setPasswordMessage('✅ Mật khẩu đã được thay đổi thành công!');
+    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    
+    setTimeout(() => {
+      setShowPasswordModal(false);
+      setPasswordMessage('');
+    }, 2000);
   };
 
   return (
@@ -242,8 +291,14 @@ const AccountManagement = () => {
 
                 <div className="pt-6 border-t">
                   <h3 className="font-bold text-gray-800 mb-4">Bảo Mật</h3>
-                  <button className="w-full text-left px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition flex justify-between items-center">
-                    <span className="font-medium text-gray-700">Thay Đổi Mật Khẩu</span>
+                  <button 
+                    onClick={() => setShowPasswordModal(true)}
+                    className="w-full text-left px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition flex justify-between items-center font-medium text-gray-700"
+                  >
+                    <span className="flex items-center space-x-2">
+                      <Lock className="w-5 h-5" />
+                      <span>Thay Đổi Mật Khẩu</span>
+                    </span>
                     <span className="text-gray-400">&gt;</span>
                   </button>
                 </div>
@@ -323,6 +378,107 @@ const AccountManagement = () => {
                     <p className="text-green-800 font-medium">✅ Ảnh tải lên thành công</p>
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 flex items-center justify-between rounded-t-lg">
+              <div className="flex items-center space-x-3">
+                <Lock className="w-6 h-6 text-white" />
+                <h3 className="text-xl font-bold text-white">Thay Đổi Mật Khẩu</h3>
+              </div>
+              <button
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setPasswordMessage('');
+                  setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                }}
+                className="p-2 hover:bg-blue-500 rounded-lg transition"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {passwordMessage && (
+                <div className={`mb-4 p-4 rounded-lg ${
+                  passwordMessage.includes('✅')
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-red-50 border border-red-200'
+                }`}>
+                  <p className={passwordMessage.includes('✅') ? 'text-green-800' : 'text-red-800'}>
+                    {passwordMessage}
+                  </p>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mật Khẩu Hiện Tại
+                  </label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={passwordForm.currentPassword}
+                    onChange={handlePasswordInputChange}
+                    placeholder="Nhập mật khẩu hiện tại"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mật Khẩu Mới
+                  </label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordForm.newPassword}
+                    onChange={handlePasswordInputChange}
+                    placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Xác Nhận Mật Khẩu
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordForm.confirmPassword}
+                    onChange={handlePasswordInputChange}
+                    placeholder="Xác nhận mật khẩu mới"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setPasswordMessage('');
+                    setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                  }}
+                  className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={handlePasswordChange}
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition flex items-center justify-center space-x-2"
+                >
+                  <Save className="w-5 h-5" />
+                  <span>Cập Nhật</span>
+                </button>
               </div>
             </div>
           </div>

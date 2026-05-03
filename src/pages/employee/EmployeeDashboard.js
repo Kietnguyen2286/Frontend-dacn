@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import { useAuth } from '../../context/AuthContext';
-import { Calendar, CheckCircle, Clock, FileText } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, FileText, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
@@ -37,13 +37,169 @@ const EmployeeDashboard = () => {
     },
   ];
 
-  const recentLeaves = [
+  // Leaves data
+  const leavesData = [
     { id: 1, type: 'Nghỉ phép', date: '15/12/2025 - 20/12/2025', days: 6, status: 'approved' },
     { id: 2, type: 'Nghỉ ốm', date: '05/11/2025 - 06/11/2025', days: 2, status: 'approved' },
     { id: 3, type: 'Nghỉ phép', date: '10/01/2026 - 12/01/2026', days: 3, status: 'pending' },
     { id: 4, type: 'Nghỉ phép', date: '20/01/2026 - 25/01/2026', days: 6, status: 'pending' },
     { id: 5, type: 'Nghỉ việc riêng', date: '20/10/2025', days: 1, status: 'approved' },
+    { id: 6, type: 'Nghỉ phép', date: '05/02/2026 - 08/02/2026', days: 4, status: 'approved' },
+    { id: 7, type: 'Nghỉ ốm', date: '15/02/2026 - 16/02/2026', days: 2, status: 'pending' },
+    { id: 8, type: 'Nghỉ phép', date: '25/02/2026 - 28/02/2026', days: 4, status: 'approved' },
+    { id: 9, type: 'Nghỉ việc riêng', date: '10/03/2026', days: 1, status: 'approved' },
+    { id: 10, type: 'Nghỉ phép', date: '15/03/2026 - 18/03/2026', days: 4, status: 'pending' },
+    { id: 11, type: 'Nghỉ ốm', date: '20/03/2026', days: 1, status: 'approved' },
+    { id: 12, type: 'Nghỉ phép', date: '25/03/2026 - 30/03/2026', days: 6, status: 'approved' },
   ];
+
+  // Expenses data
+  const expensesData = [
+    { id: 1, category: 'Văn phòng phẩm', amount: 5000000, date: '05/01/2026', description: 'Mua máy in, giấy A4, bút viết', status: 'approved' },
+    { id: 2, category: 'Điện nước', amount: 8000000, date: '01/01/2026', description: 'Hóa đơn tháng 12/2025', status: 'approved' },
+    { id: 3, category: 'Marketing', amount: 15000000, date: '03/01/2026', description: 'Chi phí quảng cáo Facebook Ads', status: 'pending' },
+    { id: 4, category: 'Đào tạo', amount: 12000000, date: '02/01/2026', description: 'Khóa học React Advanced', status: 'approved' },
+    { id: 5, category: 'Văn phòng phẩm', amount: 3500000, date: '04/01/2026', description: 'Mua bàn ghế văn phòng', status: 'approved' },
+    { id: 6, category: 'Marketing', amount: 20000000, date: '06/01/2026', description: 'Quảng cáo Google Ads', status: 'pending' },
+    { id: 7, category: 'Du lịch công tác', amount: 25000000, date: '08/01/2026', description: 'Tham dự hội thảo HN', status: 'approved' },
+    { id: 8, category: 'Bảo hiểm', amount: 18000000, date: '10/01/2026', description: 'Bảo hiểm sức khỏe nhân viên', status: 'approved' },
+    { id: 9, category: 'Văn phòng phẩm', amount: 6000000, date: '12/01/2026', description: 'Mua tài liệu in ấn', status: 'pending' },
+    { id: 10, category: 'Điện nước', amount: 7500000, date: '15/01/2026', description: 'Hóa đơn tháng 01/2026', status: 'approved' },
+  ];
+
+  // Salary/Bonus data
+  const salaryData = [
+    { id: 1, month: '01/2026', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
+    { id: 2, month: '12/2025', baseSalary: 25000000, bonus: 3000000, deduction: 0, total: 28000000, status: 'paid' },
+    { id: 3, month: '11/2025', baseSalary: 25000000, bonus: 4000000, deduction: 500000, total: 28500000, status: 'paid' },
+    { id: 4, month: '10/2025', baseSalary: 25000000, bonus: 2500000, deduction: 0, total: 27500000, status: 'paid' },
+    { id: 5, month: '09/2025', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
+    { id: 6, month: '08/2025', baseSalary: 25000000, bonus: 3500000, deduction: 0, total: 28500000, status: 'paid' },
+    { id: 7, month: '07/2025', baseSalary: 25000000, bonus: 4000000, deduction: 200000, total: 28800000, status: 'paid' },
+    { id: 8, month: '06/2025', baseSalary: 25000000, bonus: 2000000, deduction: 0, total: 27000000, status: 'paid' },
+    { id: 9, month: '05/2025', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
+    { id: 10, month: '04/2025', baseSalary: 25000000, bonus: 3000000, deduction: 300000, total: 27700000, status: 'paid' },
+  ];
+
+  // State for leaves table
+  const [leavesSearch, setLeavesSearch] = useState('');
+  const [leavesPage, setLeavesPage] = useState(1);
+  
+  // State for expenses table
+  const [expensesSearch, setExpensesSearch] = useState('');
+  const [expensesPage, setExpensesPage] = useState(1);
+  
+  // State for salary table
+  const [salarySearch, setSalarySearch] = useState('');
+  const [salaryPage, setSalaryPage] = useState(1);
+
+  const itemsPerPage = 8;
+
+  // Filter functions
+  const getFilteredLeaves = () => {
+    return leavesData.filter(leave =>
+      leave.type.toLowerCase().includes(leavesSearch.toLowerCase()) ||
+      leave.status.toLowerCase().includes(leavesSearch.toLowerCase())
+    );
+  };
+
+  const getFilteredExpenses = () => {
+    return expensesData.filter(exp =>
+      exp.category.toLowerCase().includes(expensesSearch.toLowerCase()) ||
+      exp.description.toLowerCase().includes(expensesSearch.toLowerCase()) ||
+      exp.status.toLowerCase().includes(expensesSearch.toLowerCase())
+    );
+  };
+
+  const getFilteredSalaries = () => {
+    return salaryData.filter(sal =>
+      sal.month.includes(salarySearch) ||
+      sal.status.toLowerCase().includes(salarySearch.toLowerCase())
+    );
+  };
+
+  // Paginate data
+  const paginateData = (data, page) => {
+    const start = (page - 1) * itemsPerPage;
+    return data.slice(start, start + itemsPerPage);
+  };
+
+  const filteredLeaves = getFilteredLeaves();
+  const filteredExpenses = getFilteredExpenses();
+  const filteredSalaries = getFilteredSalaries();
+
+  const paginatedLeaves = paginateData(filteredLeaves, leavesPage);
+  const paginatedExpenses = paginateData(filteredExpenses, expensesPage);
+  const paginatedSalaries = paginateData(filteredSalaries, salaryPage);
+
+  const totalLeavesPages = Math.ceil(filteredLeaves.length / itemsPerPage);
+  const totalExpensesPages = Math.ceil(filteredExpenses.length / itemsPerPage);
+  const totalSalaryPages = Math.ceil(filteredSalaries.length / itemsPerPage);
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', { 
+      style: 'currency', 
+      currency: 'VND',
+      maximumFractionDigits: 0 
+    }).format(amount);
+  };
+
+  const TableHeader = ({ title, description }) => (
+    <div className="mb-6">
+      <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+      <p className="text-gray-500 text-sm">{description}</p>
+    </div>
+  );
+
+  const SearchInput = ({ value, onChange }) => (
+    <div className="mb-4 relative">
+      <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+      <input
+        type="text"
+        placeholder="Tìm kiếm..."
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      />
+    </div>
+  );
+
+  const PaginationControls = ({ currentPage, totalPages, onPageChange }) => (
+    <div className="flex items-center justify-between mt-4 p-4 bg-gray-50 rounded-lg">
+      <div className="text-sm text-gray-600">
+        Trang {currentPage} / {totalPages}
+      </div>
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
+          className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+          <button
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`px-3 py-2 rounded ${
+              currentPage === page
+                ? 'bg-blue-600 text-white'
+                : 'border border-gray-300 hover:bg-gray-100'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+        <button
+          onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <Layout>
@@ -80,16 +236,17 @@ const EmployeeDashboard = () => {
           })}
         </div>
 
-        {/* Recent Leave Requests */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">Đơn Nghỉ Phép Gần Đây</h2>
-            <p className="text-gray-500 text-sm">Danh sách các đơn của bạn</p>
-          </div>
-          <div className="overflow-x-auto">
+        {/* Leaves Table */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8">
+          <TableHeader title="Đơn Nghỉ Phép" description="Quản lý và theo dõi các đơn nghỉ phép của bạn" />
+          <SearchInput 
+            value={leavesSearch} 
+            onChange={(val) => { setLeavesSearch(val); setLeavesPage(1); }}
+          />
+          <div className="overflow-x-auto max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
             <table className="min-w-full">
-              <thead>
-                <tr className="border-b-2 border-gray-200">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
                   <th className="text-left py-3 px-4 text-gray-700 font-bold">Loại Nghỉ</th>
                   <th className="text-left py-3 px-4 text-gray-700 font-bold">Thời Gian</th>
                   <th className="text-left py-3 px-4 text-gray-700 font-bold">Số Ngày</th>
@@ -97,8 +254,8 @@ const EmployeeDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentLeaves.map((leave, idx) => (
-                  <tr key={leave.id} className="border-b hover:bg-gradient-to-r hover:from-indigo-50 to-purple-50 transition-all duration-200 transform hover:scale-101">
+                {paginatedLeaves.map((leave) => (
+                  <tr key={leave.id} className="border-b hover:bg-gray-50 transition-all duration-200">
                     <td className="py-3 px-4 font-medium text-gray-800">{leave.type}</td>
                     <td className="py-3 px-4 text-gray-600">{leave.date}</td>
                     <td className="py-3 px-4">
@@ -118,6 +275,99 @@ const EmployeeDashboard = () => {
               </tbody>
             </table>
           </div>
+          <PaginationControls 
+            currentPage={leavesPage} 
+            totalPages={totalLeavesPages}
+            onPageChange={setLeavesPage}
+          />
+        </div>
+
+        {/* Expenses Table */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8">
+          <TableHeader title="Chi Phí" description="Danh sách các chi phí của bạn" />
+          <SearchInput 
+            value={expensesSearch} 
+            onChange={(val) => { setExpensesSearch(val); setExpensesPage(1); }}
+          />
+          <div className="overflow-x-auto max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
+            <table className="min-w-full">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Danh Mục</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Số Tiền</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Ngày</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Mô Tả</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Trạng Thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedExpenses.map((expense) => (
+                  <tr key={expense.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                    <td className="py-3 px-4 font-medium text-gray-800">{expense.category}</td>
+                    <td className="py-3 px-4 font-semibold text-red-600">{formatCurrency(expense.amount)}</td>
+                    <td className="py-3 px-4 text-gray-600">{expense.date}</td>
+                    <td className="py-3 px-4 text-gray-600 truncate max-w-xs">{expense.description}</td>
+                    <td className="py-3 px-4">
+                      <span className={`px-3 py-1.5 rounded-full text-xs font-bold inline-block ${
+                        expense.status === 'approved'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {expense.status === 'approved' ? '✓ Đã duyệt' : '⏳ Chờ duyệt'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls 
+            currentPage={expensesPage} 
+            totalPages={totalExpensesPages}
+            onPageChange={setExpensesPage}
+          />
+        </div>
+
+        {/* Salary Table */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <TableHeader title="Lương Thưởng" description="Lịch sử lương và thưởng của bạn" />
+          <SearchInput 
+            value={salarySearch} 
+            onChange={(val) => { setSalarySearch(val); setSalaryPage(1); }}
+          />
+          <div className="overflow-x-auto max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
+            <table className="min-w-full">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Tháng</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Lương Cơ Bản</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Thưởng</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Khấu Trừ</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Tổng Cộng</th>
+                  <th className="text-left py-3 px-4 text-gray-700 font-bold">Trạng Thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSalaries.map((salary) => (
+                  <tr key={salary.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                    <td className="py-3 px-4 font-medium text-gray-800">{salary.month}</td>
+                    <td className="py-3 px-4 text-gray-600">{formatCurrency(salary.baseSalary)}</td>
+                    <td className="py-3 px-4 text-green-600 font-semibold">{formatCurrency(salary.bonus)}</td>
+                    <td className="py-3 px-4 text-red-600">{formatCurrency(salary.deduction)}</td>
+                    <td className="py-3 px-4 font-bold text-blue-600">{formatCurrency(salary.total)}</td>
+                    <td className="py-3 px-4">
+                      <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-800">✓ Đã thanh toán</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <PaginationControls 
+            currentPage={salaryPage} 
+            totalPages={totalSalaryPages}
+            onPageChange={setSalaryPage}
+          />
         </div>
       </div>
 
