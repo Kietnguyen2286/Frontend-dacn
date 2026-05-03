@@ -15,13 +15,20 @@ const AccountManagement = () => {
   const [customAvatarUrl, setCustomAvatarUrl] = useState(() => {
     return localStorage.getItem(`customAvatarUrl_${user?.username}`) || null;
   });
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    username: user?.username || '',
-    role: user?.role || '',
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem(`userData_${user?.username}`);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return {
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+      username: user?.username || '',
+      role: user?.role || '',
+    };
   });
+  const [showAvatarGrid, setShowAvatarGrid] = useState(false);
 
   const avatarOptions = Array.from({ length: 30 }, (_, i) => 
     `https://i.pravatar.cc/150?img=${i}`
@@ -37,6 +44,7 @@ const AccountManagement = () => {
 
   const handleSave = () => {
     console.log('Saving:', formData);
+    localStorage.setItem(`userData_${user?.username}`, JSON.stringify(formData));
     setIsEditing(false);
     setSuccessMessage('✅ Thông tin đã được cập nhật thành công!');
     setTimeout(() => setSuccessMessage(''), 3000);
@@ -260,24 +268,35 @@ const AccountManagement = () => {
 
             <div className="p-6">
               <div className="mb-8">
-                <p className="font-semibold text-gray-800 mb-4">Chọn từ danh sách có sẵn:</p>
-                <div className="grid grid-cols-5 gap-4">
-                  {avatarOptions.map((avatar, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleAvatarSelect(idx)}
-                      className={`rounded-full border-4 transition-all transform hover:scale-110 ${
-                        selectedAvatar === idx && !customAvatarUrl ? 'border-blue-500 ring-4 ring-blue-300' : 'border-gray-300'
-                      }`}
-                    >
-                      <img 
-                        src={avatar}
-                        alt={`avatar-${idx}`}
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-semibold text-gray-800">Chọn từ danh sách có sẵn:</p>
+                  <button
+                    onClick={() => setShowAvatarGrid(!showAvatarGrid)}
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    {showAvatarGrid ? '▼ Thu gọn' : '▶ Xem danh sách'}
+                  </button>
                 </div>
+                
+                {showAvatarGrid && (
+                  <div className="grid grid-cols-5 gap-4">
+                    {avatarOptions.map((avatar, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleAvatarSelect(idx)}
+                        className={`rounded-full border-4 transition-all transform hover:scale-110 ${
+                          selectedAvatar === idx && !customAvatarUrl ? 'border-blue-500 ring-4 ring-blue-300' : 'border-gray-300'
+                        }`}
+                      >
+                        <img 
+                          src={avatar}
+                          alt={`avatar-${idx}`}
+                          className="w-20 h-20 rounded-full object-cover"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="border-t pt-6">

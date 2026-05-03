@@ -1,279 +1,105 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
-import { Calendar, Clock, TrendingUp } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const AttendanceHistory = () => {
-  const [selectedMonth, setSelectedMonth] = useState('01/2026');
+  const [attendance] = useState([
+    { id: 1, date: '2025-12-20', checkIn: '08:30', checkOut: '17:45', status: 'on-time', duration: '9h 15m' },
+    { id: 2, date: '2025-12-19', checkIn: '08:15', checkOut: '17:30', status: 'on-time', duration: '9h 15m' },
+    { id: 3, date: '2025-12-18', checkIn: '08:45', checkOut: '18:00', status: 'late', duration: '9h 15m' },
+    { id: 4, date: '2025-12-17', checkIn: '08:00', checkOut: '17:15', status: 'on-time', duration: '9h 15m' },
+    { id: 5, date: '2025-12-16', checkIn: '08:30', checkOut: '17:45', status: 'on-time', duration: '9h 15m' },
+    { id: 6, date: '2025-12-15', checkIn: 'N/A', checkOut: 'N/A', status: 'absent', duration: '-' },
+    { id: 7, date: '2025-12-14', checkIn: '08:20', checkOut: '17:40', status: 'on-time', duration: '9h 20m' },
+    { id: 8, date: '2025-12-13', checkIn: '08:10', checkOut: '17:25', status: 'on-time', duration: '9h 15m' },
+    { id: 9, date: '2025-12-12', checkIn: '09:00', checkOut: '18:00', status: 'late', duration: '9h' },
+    { id: 10, date: '2025-12-11', checkIn: '08:30', checkOut: '17:45', status: 'on-time', duration: '9h 15m' },
+    { id: 11, date: '2025-12-10', checkIn: '08:00', checkOut: '17:15', status: 'on-time', duration: '9h 15m' },
+    { id: 12, date: '2025-12-09', checkIn: '08:35', checkOut: '17:50', status: 'on-time', duration: '9h 15m' },
+  ]);
 
-  const attendanceData = [
-    { 
-      id: 1, 
-      date: '06/01/2026', 
-      day: 'Thứ 2',
-      checkIn: '08:00', 
-      checkOut: '17:30', 
-      hours: '8.5',
-      overtime: '0.5',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 2, 
-      date: '05/01/2026', 
-      day: 'Chủ Nhật',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ'
-    },
-    { 
-      id: 3, 
-      date: '04/01/2026', 
-      day: 'Thứ 7',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ'
-    },
-    { 
-      id: 4, 
-      date: '03/01/2026', 
-      day: 'Thứ 6',
-      checkIn: '08:15', 
-      checkOut: '17:15', 
-      hours: '8.0',
-      overtime: '0',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 5, 
-      date: '02/01/2026', 
-      day: 'Thứ 5',
-      checkIn: '08:00', 
-      checkOut: '18:00', 
-      hours: '9.0',
-      overtime: '1.0',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 6, 
-      date: '01/01/2026', 
-      day: 'Thứ 4',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ lễ'
-    },
-    { 
-      id: 7, 
-      date: '31/12/2025', 
-      day: 'Thứ 3',
-      checkIn: '08:30', 
-      checkOut: '17:30', 
-      hours: '8.0',
-      overtime: '0',
-      status: 'Đi muộn'
-    },
-    { 
-      id: 8, 
-      date: '30/12/2025', 
-      day: 'Thứ 2',
-      checkIn: '08:00', 
-      checkOut: '17:00', 
-      hours: '8.0',
-      overtime: '0',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 9, 
-      date: '29/12/2025', 
-      day: 'Chủ Nhật',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ'
-    },
-    { 
-      id: 10, 
-      date: '28/12/2025', 
-      day: 'Thứ 7',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ'
-    },
-    { 
-      id: 11, 
-      date: '27/12/2025', 
-      day: 'Thứ 6',
-      checkIn: '08:45', 
-      checkOut: '17:15', 
-      hours: '7.5',
-      overtime: '0',
-      status: 'Đi muộn'
-    },
-    { 
-      id: 12, 
-      date: '26/12/2025', 
-      day: 'Thứ 5',
-      checkIn: '08:00', 
-      checkOut: '17:30', 
-      hours: '8.5',
-      overtime: '0.5',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 13, 
-      date: '25/12/2025', 
-      day: 'Thứ 4',
-      checkIn: '-', 
-      checkOut: '-', 
-      hours: '0',
-      overtime: '0',
-      status: 'Nghỉ lễ'
-    },
-    { 
-      id: 14, 
-      date: '24/12/2025', 
-      day: 'Thứ 3',
-      checkIn: '08:00', 
-      checkOut: '19:00', 
-      hours: '10.0',
-      overtime: '2.0',
-      status: 'Đúng giờ'
-    },
-    { 
-      id: 15, 
-      date: '23/12/2025', 
-      day: 'Thứ 2',
-      checkIn: '08:10', 
-      checkOut: '17:20', 
-      hours: '8.17',
-      overtime: '0.17',
-      status: 'Đúng giờ'
-    },
-  ];
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
-  const monthlyStats = {
-    totalDays: 22,
-    workDays: 18,
-    leaveDays: 2,
-    lateDays: 2,
-    totalHours: 144,
-    overtime: 4,
-    avgHoursPerDay: 8
-  };
+  const filteredAttendance = attendance.filter(record =>
+    record.date.includes(searchTerm) ||
+    record.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const getStatusColor = (status) => {
+  const totalPages = Math.ceil(filteredAttendance.length / itemsPerPage);
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const paginatedAttendance = filteredAttendance.slice(startIdx, endIdx);
+
+  const getStatusBadge = (status) => {
     switch (status) {
-      case 'Đúng giờ':
-        return 'bg-green-100 text-green-800';
-      case 'Đi muộn':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'Nghỉ':
-        return 'bg-gray-100 text-gray-800';
-      case 'Nghỉ lễ':
-        return 'bg-blue-100 text-blue-800';
+      case 'on-time':
+        return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">Đúng giờ</span>;
+      case 'late':
+        return <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">Muộn</span>;
+      case 'absent':
+        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">Vắng mặt</span>;
       default:
-        return 'bg-gray-100 text-gray-800';
+        return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">{status}</span>;
     }
   };
 
   return (
     <Layout>
       <div>
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Lịch Sử Chấm Công</h1>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Chọn Tháng
-            </label>
-            <select
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="01/2026">Tháng 1/2026</option>
-              <option value="12/2025">Tháng 12/2025</option>
-              <option value="11/2025">Tháng 11/2025</option>
-              <option value="10/2025">Tháng 10/2025</option>
-            </select>
-          </div>
+          <p className="text-gray-600 mt-2">Xem các bản ghi chấm công và thời gian làm việc của bạn</p>
         </div>
 
-        {/* Monthly Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <Calendar className="w-8 h-8 text-blue-500" />
-            </div>
-            <p className="text-gray-600 text-sm mb-1">Số Ngày Công</p>
-            <p className="text-3xl font-bold text-gray-800">
-              {monthlyStats.workDays}/{monthlyStats.totalDays}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <Clock className="w-8 h-8 text-green-500" />
-            </div>
-            <p className="text-gray-600 text-sm mb-1">Tổng Giờ Làm</p>
-            <p className="text-3xl font-bold text-gray-800">{monthlyStats.totalHours}h</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <TrendingUp className="w-8 h-8 text-purple-500" />
-            </div>
-            <p className="text-gray-600 text-sm mb-1">Giờ Làm Thêm</p>
-            <p className="text-3xl font-bold text-gray-800">{monthlyStats.overtime}h</p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-4">
-              <Clock className="w-8 h-8 text-red-500" />
-            </div>
-            <p className="text-gray-600 text-sm mb-1">Đi Muộn</p>
-            <p className="text-3xl font-bold text-gray-800">{monthlyStats.lateDays} lần</p>
+        {/* Search Bar */}
+        <div className="bg-white rounded-lg shadow p-4 mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Tìm kiếm theo ngày, trạng thái..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
           </div>
         </div>
 
         {/* Attendance Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-800">Chi Tiết Chấm Công</h2>
-          </div>
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 sticky top-0">
                 <tr>
                   <th className="text-left py-3 px-6 text-gray-600 font-semibold">Ngày</th>
-                  <th className="text-left py-3 px-6 text-gray-600 font-semibold">Thứ</th>
                   <th className="text-left py-3 px-6 text-gray-600 font-semibold">Giờ Vào</th>
                   <th className="text-left py-3 px-6 text-gray-600 font-semibold">Giờ Ra</th>
-                  <th className="text-left py-3 px-6 text-gray-600 font-semibold">Số Giờ</th>
-                  <th className="text-left py-3 px-6 text-gray-600 font-semibold">Làm Thêm</th>
+                  <th className="text-left py-3 px-6 text-gray-600 font-semibold">Thời Gian Làm Việc</th>
                   <th className="text-left py-3 px-6 text-gray-600 font-semibold">Trạng Thái</th>
                 </tr>
               </thead>
+            </table>
+          </div>
+
+          <div className="overflow-y-auto max-h-96">
+            <table className="min-w-full">
               <tbody className="divide-y divide-gray-200">
-                {attendanceData.map((record) => (
+                {paginatedAttendance.map((record) => (
                   <tr key={record.id} className="hover:bg-gray-50">
-                    <td className="py-4 px-6 font-medium">{record.date}</td>
-                    <td className="py-4 px-6">{record.day}</td>
+                    <td className="py-4 px-6 font-medium">{new Date(record.date).toLocaleDateString('vi-VN')}</td>
                     <td className="py-4 px-6">{record.checkIn}</td>
                     <td className="py-4 px-6">{record.checkOut}</td>
-                    <td className="py-4 px-6 font-semibold text-blue-600">{record.hours}h</td>
-                    <td className="py-4 px-6 text-purple-600">{record.overtime}h</td>
                     <td className="py-4 px-6">
-                      <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(record.status)}`}>
-                        {record.status}
+                      <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                        {record.duration}
                       </span>
                     </td>
+                    <td className="py-4 px-6">{getStatusBadge(record.status)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -281,23 +107,41 @@ const AttendanceHistory = () => {
           </div>
         </div>
 
-        {/* Summary Footer */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Trung Bình Giờ/Ngày</p>
-              <p className="text-2xl font-bold text-blue-600">{monthlyStats.avgHoursPerDay}h</p>
+        {/* Pagination */}
+        <div className="flex items-center justify-between mt-6 p-4 bg-white rounded-lg shadow">
+          <div className="text-sm text-gray-600">
+            Hiển thị {startIdx + 1}-{Math.min(endIdx, filteredAttendance.length)} / {filteredAttendance.length} bản ghi
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-2 rounded ${
+                    currentPage === page
+                      ? 'bg-blue-600 text-white'
+                      : 'border border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
             </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Ngày Nghỉ Phép</p>
-              <p className="text-2xl font-bold text-green-600">{monthlyStats.leaveDays} ngày</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Tỷ Lệ Đi Làm</p>
-              <p className="text-2xl font-bold text-purple-600">
-                {((monthlyStats.workDays / monthlyStats.totalDays) * 100).toFixed(0)}%
-              </p>
-            </div>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
