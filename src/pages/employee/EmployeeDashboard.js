@@ -165,7 +165,7 @@ const EmployeeDashboard = () => {
   );
 
   const PaginationControls = ({ currentPage, totalPages, onPageChange }) => (
-    <div className="flex items-center justify-between mt-4 p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center justify-between mt-4 p-4 bg-gray-50 rounded-lg animate-slideUp">
       <div className="text-sm text-gray-600">
         Trang {currentPage} / {totalPages}
       </div>
@@ -237,7 +237,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Leaves Table */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8 section-enter" style={{animationDelay: '0.1s'}}>
           <TableHeader title="Đơn Nghỉ Phép" description="Quản lý và theo dõi các đơn nghỉ phép của bạn" />
           <SearchInput 
             value={leavesSearch} 
@@ -254,8 +254,8 @@ const EmployeeDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedLeaves.map((leave) => (
-                  <tr key={leave.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedLeaves.map((leave, idx) => (
+                  <tr key={leave.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{leave.type}</td>
                     <td className="py-3 px-4 text-gray-600">{leave.date}</td>
                     <td className="py-3 px-4">
@@ -283,7 +283,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Expenses Table */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8 section-enter" style={{animationDelay: '0.2s'}}>
           <TableHeader title="Chi Phí" description="Danh sách các chi phí của bạn" />
           <SearchInput 
             value={expensesSearch} 
@@ -301,8 +301,8 @@ const EmployeeDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedExpenses.map((expense) => (
-                  <tr key={expense.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedExpenses.map((expense, idx) => (
+                  <tr key={expense.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{expense.category}</td>
                     <td className="py-3 px-4 font-semibold text-red-600">{formatCurrency(expense.amount)}</td>
                     <td className="py-3 px-4 text-gray-600">{expense.date}</td>
@@ -329,7 +329,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Salary Table */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 section-enter" style={{animationDelay: '0.3s'}}>
           <TableHeader title="Lương Thưởng" description="Lịch sử lương và thưởng của bạn" />
           <SearchInput 
             value={salarySearch} 
@@ -348,8 +348,8 @@ const EmployeeDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedSalaries.map((salary) => (
-                  <tr key={salary.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedSalaries.map((salary, idx) => (
+                  <tr key={salary.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{salary.month}</td>
                     <td className="py-3 px-4 text-gray-600">{formatCurrency(salary.baseSalary)}</td>
                     <td className="py-3 px-4 text-green-600 font-semibold">{formatCurrency(salary.bonus)}</td>
@@ -392,8 +392,41 @@ const EmployeeDashboard = () => {
             transform: translateY(0);
           }
         }
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
         .animate-fadeIn {
           animation: fadeIn 0.5s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.6s ease-out;
+        }
+        .animate-slideInLeft {
+          animation: slideInLeft 0.6s ease-out;
+        }
+        .table-row-enter {
+          animation: slideInLeft 0.4s ease-out backwards;
+        }
+        .section-enter {
+          animation: fadeIn 0.7s ease-out;
+        }
+        tr:hover {
+          transition: all 0.3s ease;
         }
       `}</style>
     </Layout>

@@ -156,7 +156,7 @@ const AdminDashboard = () => {
   );
 
   const PaginationControls = ({ currentPage, totalPages, onPageChange }) => (
-    <div className="flex items-center justify-between mt-4 p-4 bg-gray-50 rounded-lg">
+    <div className="flex items-center justify-between mt-4 p-4 bg-gray-50 rounded-lg animate-slideUp">
       <div className="text-sm text-gray-600">
         Trang {currentPage} / {totalPages}
       </div>
@@ -229,7 +229,7 @@ const AdminDashboard = () => {
         <div className="mb-8 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Tổng Quan KPI</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300 kpi-card-enter" style={{animationDelay: '0.2s'}}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">Hiệu suất chung</p>
@@ -240,7 +240,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-lg p-6 border border-green-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-lg p-6 border border-green-100 hover:shadow-xl transition-all duration-300 kpi-card-enter" style={{animationDelay: '0.3s'}}>
               <div>
                 <p className="text-gray-600 text-sm font-medium">Chỉ tiêu hoàn thành</p>
                 <p className="text-4xl font-bold text-green-600 mt-3">{kpiSummary.completedCount}/{kpiSummary.totalEmployees}</p>
@@ -249,7 +249,7 @@ const AdminDashboard = () => {
               <Award className="w-14 h-14 text-green-300 absolute right-6 top-6 opacity-50" />
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg p-6 border border-purple-100 hover:shadow-xl transition-all duration-300 relative">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg p-6 border border-purple-100 hover:shadow-xl transition-all duration-300 relative kpi-card-enter" style={{animationDelay: '0.4s'}}>
               <div>
                 <p className="text-gray-600 text-sm font-medium">Trạng thái hiệu suất</p>
                 <p className="text-3xl font-bold text-purple-600 mt-3">
@@ -284,8 +284,8 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedLeaves.map((leave) => (
-                  <tr key={leave.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedLeaves.map((leave, idx) => (
+                  <tr key={leave.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{leave.name}</td>
                     <td className="py-3 px-4 text-gray-600">{leave.type}</td>
                     <td className="py-3 px-4 text-gray-600">{leave.date}</td>
@@ -332,8 +332,8 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedExpenses.map((expense) => (
-                  <tr key={expense.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedExpenses.map((expense, idx) => (
+                  <tr key={expense.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{expense.category}</td>
                     <td className="py-3 px-4 font-semibold text-red-600">{formatCurrency(expense.amount)}</td>
                     <td className="py-3 px-4 text-gray-600">{expense.date}</td>
@@ -379,8 +379,8 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedSalaries.map((salary) => (
-                  <tr key={salary.id} className="border-b hover:bg-gray-50 transition-all duration-200">
+                {paginatedSalaries.map((salary, idx) => (
+                  <tr key={salary.id} className="border-b hover:bg-gray-50 transition-all duration-200 table-row-enter" style={{animationDelay: `${idx * 40}ms`}}>
                     <td className="py-3 px-4 font-medium text-gray-800">{salary.month}</td>
                     <td className="py-3 px-4 font-semibold text-blue-600">{formatCurrency(salary.totalSalary)}</td>
                     <td className="py-3 px-4">
@@ -431,8 +431,60 @@ const AdminDashboard = () => {
             transform: translateY(0);
           }
         }
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.8;
+          }
+        }
         .animate-fadeIn {
           animation: fadeIn 0.5s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.6s ease-out;
+        }
+        .animate-slideInLeft {
+          animation: slideInLeft 0.6s ease-out;
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.5s ease-out;
+        }
+        .table-row-enter {
+          animation: slideInLeft 0.4s ease-out backwards;
+        }
+        .section-enter {
+          animation: fadeIn 0.7s ease-out;
+        }
+        .kpi-card-enter {
+          animation: scaleIn 0.5s ease-out;
+        }
+        tr {
+          transition: all 0.3s ease;
+        }
+        tr:hover {
+          transform: translateX(4px);
         }
       `}</style>
     </Layout>
