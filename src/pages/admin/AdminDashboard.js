@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import { Users, Calendar, DollarSign, CheckCircle } from 'lucide-react';
+import { Users, Calendar, DollarSign, CheckCircle, TrendingUp, Target, Award } from 'lucide-react';
 
 const AdminDashboard = () => {
   const stats = [
@@ -45,6 +45,13 @@ const AdminDashboard = () => {
     { id: 8, name: 'Bùi Thị H', type: 'Nghỉ việc riêng', date: '09/01', status: 'pending' },
   ];
 
+  const kpiSummary = {
+    overallPercentage: 102,
+    completedCount: 10,
+    totalEmployees: 12,
+    trend: '+5%'
+  };
+
   return (
     <Layout>
       <div className="animate-fadeIn">
@@ -76,6 +83,43 @@ const AdminDashboard = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* KPI Summary Section */}
+        <div className="mb-8 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Tổng Quan KPI</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-600 text-sm font-medium">Hiệu suất chung</p>
+                  <p className="text-4xl font-bold text-blue-600 mt-3">{kpiSummary.overallPercentage}%</p>
+                  <p className="text-green-600 text-xs font-semibold mt-2">{kpiSummary.trend} so với quý trước</p>
+                </div>
+                <TrendingUp className="w-14 h-14 text-blue-300" />
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-lg p-6 border border-green-100 hover:shadow-xl transition-all duration-300">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Chỉ tiêu hoàn thành</p>
+                <p className="text-4xl font-bold text-green-600 mt-3">{kpiSummary.completedCount}/{kpiSummary.totalEmployees}</p>
+                <p className="text-gray-600 text-xs font-medium mt-2">Nhân viên đạt/vượt mục tiêu</p>
+              </div>
+              <Award className="w-14 h-14 text-green-300 absolute right-6 top-6 opacity-50" />
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg p-6 border border-purple-100 hover:shadow-xl transition-all duration-300 relative">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Trạng thái hiệu suất</p>
+                <p className="text-3xl font-bold text-purple-600 mt-3">
+                  {kpiSummary.overallPercentage >= 100 ? '🎯 Vượt chỉ tiêu' : '📊 Trong kế hoạch'}
+                </p>
+                <p className="text-gray-600 text-xs font-medium mt-2">Tổng thể toàn công ty</p>
+              </div>
+              <Target className="w-14 h-14 text-purple-300 absolute right-6 top-6 opacity-50" />
+            </div>
+          </div>
         </div>
 
         {/* Recent Leave Requests */}
