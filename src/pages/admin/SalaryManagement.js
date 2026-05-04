@@ -33,7 +33,7 @@ const SalaryManagement = () => {
     }).format(amount);
   };
 
-  const filteredSalaries = salaries.filter(sal =>
+  const filteredSalaries = salaries.filter((sal) =>
     sal.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     sal.employeeId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     sal.month.includes(searchTerm) ||
@@ -46,7 +46,7 @@ const SalaryManagement = () => {
 
   const totalSalary = salaries.reduce((sum, s) => sum + s.total, 0);
   const totalBonus = salaries.reduce((sum, s) => sum + s.bonus, 0);
-  const paidCount = salaries.filter(s => s.status === 'paid').length;
+  const paidCount = salaries.filter((s) => s.status === 'paid').length;
 
   return (
     <Layout>
