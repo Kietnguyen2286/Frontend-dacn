@@ -64,7 +64,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-800 text-white min-h-screen flex flex-col shadow-2xl`}>
+      <div className={`${isOpen ? 'w-64' : 'w-20'} fixed transition-all duration-300 bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-800 text-white h-screen flex flex-col shadow-2xl z-40`}>
         {/* User Profile Section */}
         <div className="p-4 border-b border-indigo-500">
           <div className="flex items-center justify-between">
