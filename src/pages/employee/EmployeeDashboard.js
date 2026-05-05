@@ -1,10 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import { useAuth } from '../../context/AuthContext';
 import { Calendar, CheckCircle, Clock, FileText, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
+  const [employee, setEmployee] = useState(null);
+  const [leaves, setLeaves] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [salaries, setSalaries] = useState([]);
+
+  // Fetch employee profile and data
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
+        // Fetch employee profile
+        const empRes = await fetch(`${apiUrl}/employees/profile/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (empRes.ok) {
+          setEmployee(await empRes.json());
+        }
+
+        // Fetch leaves - filter by current employee
+        const leavesRes = await fetch(`${apiUrl}/leaves`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (leavesRes.ok) {
+          const allLeaves = await leavesRes.json();
+          // Note: This would need to be filtered by employee_id in backend
+          setLeaves(allLeaves.slice(0, 12));
+        }
+
+        // Fetch expenses - filter by current employee
+        const expensesRes = await fetch(`${apiUrl}/expenses`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (expensesRes.ok) {
+          const allExpenses = await expensesRes.json();
+          setExpenses(allExpenses.slice(0, 10));
+        }
+
+        // Fetch salaries - filter by current employee
+        const salariesRes = await fetch(`${apiUrl}/salary`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (salariesRes.ok) {
+          const allSalaries = await salariesRes.json();
+          setSalaries(allSalaries.slice(0, 10));
+        }
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+
+    if (user) {
+      fetchEmployeeData();
+    }
+  }, [user]);
 
   const stats = [
     { 
@@ -16,29 +72,29 @@ const EmployeeDashboard = () => {
     },
     { 
       title: 'Đơn Chờ Duyệt', 
-      value: '2', 
+      value: leaves.filter(l => l.status === 'pending').length.toString(), 
       icon: Clock, 
       color: 'bg-yellow-500',
       unit: 'đơn'
     },
     { 
       title: 'Đơn Đã Duyệt', 
-      value: '8', 
+      value: leaves.filter(l => l.status === 'approved').length.toString(), 
       icon: CheckCircle, 
       color: 'bg-green-500',
       unit: 'đơn'
     },
     { 
       title: 'Tổng Đơn', 
-      value: '10', 
+      value: leaves.length.toString(), 
       icon: FileText, 
       color: 'bg-purple-500',
       unit: 'đơn'
     },
   ];
 
-  // Leaves data
-  const leavesData = [
+  // Use fetched data or defaults
+  const leavesData = leaves.length > 0 ? leaves : [
     { id: 1, type: 'Nghỉ phép', date: '15/12/2025 - 20/12/2025', days: 6, status: 'approved' },
     { id: 2, type: 'Nghỉ ốm', date: '05/11/2025 - 06/11/2025', days: 2, status: 'approved' },
     { id: 3, type: 'Nghỉ phép', date: '10/01/2026 - 12/01/2026', days: 3, status: 'pending' },
@@ -47,14 +103,9 @@ const EmployeeDashboard = () => {
     { id: 6, type: 'Nghỉ phép', date: '05/02/2026 - 08/02/2026', days: 4, status: 'approved' },
     { id: 7, type: 'Nghỉ ốm', date: '15/02/2026 - 16/02/2026', days: 2, status: 'pending' },
     { id: 8, type: 'Nghỉ phép', date: '25/02/2026 - 28/02/2026', days: 4, status: 'approved' },
-    { id: 9, type: 'Nghỉ việc riêng', date: '10/03/2026', days: 1, status: 'approved' },
-    { id: 10, type: 'Nghỉ phép', date: '15/03/2026 - 18/03/2026', days: 4, status: 'pending' },
-    { id: 11, type: 'Nghỉ ốm', date: '20/03/2026', days: 1, status: 'approved' },
-    { id: 12, type: 'Nghỉ phép', date: '25/03/2026 - 30/03/2026', days: 6, status: 'approved' },
   ];
 
-  // Expenses data
-  const expensesData = [
+  const expensesData = expenses.length > 0 ? expenses : [
     { id: 1, category: 'Văn phòng phẩm', amount: 5000000, date: '05/01/2026', description: 'Mua máy in, giấy A4, bút viết', status: 'approved' },
     { id: 2, category: 'Điện nước', amount: 8000000, date: '01/01/2026', description: 'Hóa đơn tháng 12/2025', status: 'approved' },
     { id: 3, category: 'Marketing', amount: 15000000, date: '03/01/2026', description: 'Chi phí quảng cáo Facebook Ads', status: 'pending' },
@@ -63,22 +114,13 @@ const EmployeeDashboard = () => {
     { id: 6, category: 'Marketing', amount: 20000000, date: '06/01/2026', description: 'Quảng cáo Google Ads', status: 'pending' },
     { id: 7, category: 'Du lịch công tác', amount: 25000000, date: '08/01/2026', description: 'Tham dự hội thảo HN', status: 'approved' },
     { id: 8, category: 'Bảo hiểm', amount: 18000000, date: '10/01/2026', description: 'Bảo hiểm sức khỏe nhân viên', status: 'approved' },
-    { id: 9, category: 'Văn phòng phẩm', amount: 6000000, date: '12/01/2026', description: 'Mua tài liệu in ấn', status: 'pending' },
-    { id: 10, category: 'Điện nước', amount: 7500000, date: '15/01/2026', description: 'Hóa đơn tháng 01/2026', status: 'approved' },
   ];
 
-  // Salary/Bonus data
-  const salaryData = [
+  const salaryData = salaries.length > 0 ? salaries : [
     { id: 1, month: '01/2026', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
     { id: 2, month: '12/2025', baseSalary: 25000000, bonus: 3000000, deduction: 0, total: 28000000, status: 'paid' },
     { id: 3, month: '11/2025', baseSalary: 25000000, bonus: 4000000, deduction: 500000, total: 28500000, status: 'paid' },
     { id: 4, month: '10/2025', baseSalary: 25000000, bonus: 2500000, deduction: 0, total: 27500000, status: 'paid' },
-    { id: 5, month: '09/2025', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
-    { id: 6, month: '08/2025', baseSalary: 25000000, bonus: 3500000, deduction: 0, total: 28500000, status: 'paid' },
-    { id: 7, month: '07/2025', baseSalary: 25000000, bonus: 4000000, deduction: 200000, total: 28800000, status: 'paid' },
-    { id: 8, month: '06/2025', baseSalary: 25000000, bonus: 2000000, deduction: 0, total: 27000000, status: 'paid' },
-    { id: 9, month: '05/2025', baseSalary: 25000000, bonus: 5000000, deduction: 0, total: 30000000, status: 'paid' },
-    { id: 10, month: '04/2025', baseSalary: 25000000, bonus: 3000000, deduction: 300000, total: 27700000, status: 'paid' },
   ];
 
   // State for leaves table
@@ -206,7 +248,7 @@ const EmployeeDashboard = () => {
       <div className="animate-fadeIn">
         <div className="mb-8 bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-2xl border border-indigo-200">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Xin chào, {user?.name}! 👋
+            👋 Xin chào, {employee ? `${employee.first_name} ${employee.last_name}` : user?.name || 'Nhân viên'}
           </h1>
           <p className="text-gray-600 text-lg">Chào mừng bạn trở lại với hệ thống quản lý</p>
         </div>

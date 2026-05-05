@@ -93,16 +93,33 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await connection.execute(
+    // Insert user
+    const [userResult] = await connection.execute(
       'INSERT INTO users (username, password_hash, name, email, role) VALUES (?, ?, ?, ?, ?)',
       [username, hashedPassword, fullName, email, role || 'employee']
+    );
+
+    const userId = userResult.insertId;
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
+    // Generate employee ID
+    const employeeId = `EMP${Date.now()}`;
+
+    // Create employee record
+    await connection.execute(
+      `INSERT INTO employees (user_id, employee_id, first_name, last_name, email, status) 
+       VALUES (?, ?, ?, ?, ?, 'active')`,
+      [userId, employeeId, firstName, lastName, email]
     );
 
     connection.release();
     res.status(201).json({ 
       success: true, 
       message: 'Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.',
-      email: email
+      email: email,
+      userId: userId
     });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi máy chủ: ' + error.message });
