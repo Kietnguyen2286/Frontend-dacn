@@ -85,9 +85,8 @@ const Login = () => {
         return;
       }
 
-      // Simulate sending confirmation email
+      // Send registration to backend
       try {
-        // Call backend API to register
         const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
         const response = await fetch(`${apiUrl}/auth/register`, {
           method: 'POST',
@@ -97,32 +96,33 @@ const Login = () => {
           body: JSON.stringify({
             username,
             password,
-            name: fullName,
+            fullName,
             email,
             role: 'employee'
-          })
+          }),
         });
 
         const data = await response.json();
 
-        if (data.success) {
-          setSuccess(`Đăng ký thành công! Vui lòng kiểm tra email ${email} để xác nhận tài khoản.`);
-          
-          // Reset form after 3 seconds
-          setTimeout(() => {
-            setFullName('');
-            setEmail('');
-            setUsername('');
-            setPassword('');
-            setConfirmPassword('');
-            setMode('login');
-            setSuccess('');
-          }, 3000);
-        } else {
-          setError(data.message || 'Lỗi đăng ký');
+        if (!response.ok) {
+          setError(data.message || 'Đăng ký thất bại');
+          return;
         }
+
+        setSuccess(`Đăng ký thành công! Vui lòng kiểm tra email ${email} để xác nhận tài khoản.`);
+        
+        // Reset form
+        setTimeout(() => {
+          setFullName('');
+          setEmail('');
+          setUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          setMode('login');
+          setSuccess('');
+        }, 3000);
       } catch (err) {
-        setError('Lỗi kết nối: ' + (err.message || 'Không xác định'));
+        setError('Lỗi đăng ký: ' + (err.message || 'Không xác định'));
       }
     }
   };

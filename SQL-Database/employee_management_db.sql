@@ -9,8 +9,6 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE,
-  email_verified BOOLEAN DEFAULT FALSE,
-  verification_token VARCHAR(255),
   role ENUM('admin', 'employee') DEFAULT 'employee',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
