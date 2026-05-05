@@ -87,24 +87,42 @@ const Login = () => {
 
       // Simulate sending confirmation email
       try {
-        // Store registration data (in real app, send to backend)
-        // The userData would be sent to API endpoint for registration and email confirmation
-        
-        // Here you would normally call an API to register and send email
-        // For now, we'll show success message
-        setSuccess(`Đăng ký thành công! Vui lòng kiểm tra email ${email} để xác nhận tài khoản.`);
-        
-        // Reset form
-        setTimeout(() => {
-          setFullName('');
-          setEmail('');
-          setUsername('');
-          setPassword('');
-          setConfirmPassword('');
-          setMode('login');
-        }, 2000);
+        // Call backend API to register
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+        const response = await fetch(`${apiUrl}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            password,
+            name: fullName,
+            email,
+            role: 'employee'
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setSuccess(`Đăng ký thành công! Vui lòng kiểm tra email ${email} để xác nhận tài khoản.`);
+          
+          // Reset form after 3 seconds
+          setTimeout(() => {
+            setFullName('');
+            setEmail('');
+            setUsername('');
+            setPassword('');
+            setConfirmPassword('');
+            setMode('login');
+            setSuccess('');
+          }, 3000);
+        } else {
+          setError(data.message || 'Lỗi đăng ký');
+        }
       } catch (err) {
-        setError('Lỗi đăng ký: ' + (err.message || 'Không xác định'));
+        setError('Lỗi kết nối: ' + (err.message || 'Không xác định'));
       }
     }
   };
