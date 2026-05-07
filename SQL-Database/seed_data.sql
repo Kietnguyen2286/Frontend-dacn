@@ -3,7 +3,7 @@
 -- This script inserts sample data into all tables
 -- ============================================================================
 
-USE employee_management_db;
+USE railway;
 
 -- ============================================================================
 -- 1. INSERT USERS (Admin + 3 Employees)
