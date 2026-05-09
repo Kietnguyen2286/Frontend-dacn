@@ -13,18 +13,34 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const FRONTEND_URL = (process.env.FRONTEND_URL || '').replace(/\/$/, '');
+
+const allowedOrigins = new Set(
+  [
+    FRONTEND_URL,
+    'https://fantastic-quietude-production.up.railway.app',
+    'https://ravishing-enjoyment-production.up.railway.app',
+    'https://testdacn.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ].filter(Boolean)
+);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+};
 
 // Middleware
 // Configure CORS
-app.use(cors({
-  origin: [
-    'https://ravishing-enjoyment-production.up.railway.app',  // Current production frontend
-    'https://testdacn.vercel.app',  // Old Vercel frontend
-    'http://localhost:3000',  // Development
-    'http://localhost:3001'   // Alternative dev port
-  ],
-  credentials: true
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Routes
