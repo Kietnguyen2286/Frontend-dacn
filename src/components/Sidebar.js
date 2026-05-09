@@ -48,8 +48,24 @@ const Sidebar = () => {
         { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/admin/employees', icon: Users, label: 'Nhân Viên' },
         { path: '/admin/leaves', icon: Calendar, label: 'Nghỉ Phép' },
-        { path: '/admin/expenses', icon: Wallet, label: 'Chi Phí' },
-        { path: '/admin/salary', icon: DollarSign, label: 'Lương Thưởng' },
+        { 
+          icon: Wallet, 
+          label: 'Chi Phí', 
+          submenu: [
+            { path: '/admin/expenses', label: 'Quản Lý Chi Phí' },
+            { path: '/admin/expenses/approval', label: 'Duyệt Chi Phí' },
+            { path: '/admin/expenses/report', label: 'Báo Cáo Chi Phí' },
+          ]
+        },
+        { 
+          icon: DollarSign, 
+          label: 'Lương', 
+          submenu: [
+            { path: '/admin/salary', label: 'Quản Lý Lương' },
+            { path: '/admin/salary/calculate', label: 'Tính Lương Hàng Tháng' },
+            { path: '/admin/salary/report', label: 'Báo Cáo Lương' },
+          ]
+        },
         { path: '/admin/work-history', icon: Briefcase, label: 'Lịch Sử Công Tác' },
         { path: '/admin/kpi', icon: Target, label: 'Quản Lý KPI' },
         { path: '/support/chatbot', icon: MessageCircle, label: 'Chatbot Hỗ trợ' },
@@ -104,7 +120,43 @@ const Sidebar = () => {
           {menuItems.map((item, idx) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
+            const hasSubmenu = item.submenu && item.submenu.length > 0;
+            const isSubmenuActive = hasSubmenu && item.submenu.some(sub => location.pathname === sub.path);
             
+            if (hasSubmenu) {
+              return (
+                <div key={item.label} className="space-y-1">
+                  <div className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
+                    isSubmenuActive ? 'bg-indigo-500 text-white' : 'text-indigo-100'
+                  }`}>
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    {isOpen && <span className="truncate text-sm font-medium">{item.label}</span>}
+                  </div>
+                  {isOpen && (
+                    <div className="ml-4 space-y-1 border-l border-indigo-500">
+                      {item.submenu.map((subitem) => {
+                        const isSubActive = location.pathname === subitem.path;
+                        return (
+                          <Link
+                            key={subitem.path}
+                            to={subitem.path}
+                            className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 text-sm pl-4 ${
+                              isSubActive
+                                ? 'bg-white text-indigo-700 font-semibold'
+                                : 'hover:bg-indigo-500 text-indigo-100'
+                            }`}
+                          >
+                            <span className="w-1 h-1 rounded-full bg-current"></span>
+                            <span className="truncate">{subitem.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.path}

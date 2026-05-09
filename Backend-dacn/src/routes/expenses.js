@@ -58,4 +58,101 @@ router.put('/:id', verifyToken, verifyRole(['admin']), async (req, res) => {
   }
 });
 
+// Get expense details with employee info (admin only)
+router.get('/:id', verifyToken, verifyRole(['admin']), async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute(`
+      SELECT e.*, 
+             emp.first_name, emp.last_name, emp.employee_id, emp.department
+      FROM expenses e
+      LEFT JOIN employees emp ON e.employee_id = emp.id
+      WHERE e.id = ?
+    `, [req.params.id]);
+    connection.release();
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Expense not found' });
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Get pending expenses for approval (admin only)
+router.get('/approval/pending', verifyToken, verifyRole(['admin']), async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute(`
+      SELECT e.*, 
+             emp.first_name, emp.last_name, emp.employee_id, emp.department
+      FROM expenses e
+      LEFT JOIN employees emp ON e.employee_id = emp.id
+      WHERE e.status = 'pending'
+      ORDER BY e.date DESC
+    `);
+    connection.release();
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Get expense report by month/year (admin only)
+router.get('/report/monthly', verifyToken, verifyRole(['admin']), async (req, res) => {
+  const { month, year } = req.query;
+
+  try {
+    const connection = await pool.getConnection();
+    
+    // Get summary by category
+    const [summary] = await connection.execute(`
+      SELECT 
+        category,
+        COUNT(*) as count,
+        SUM(amount) as total_amount,
+        SUM(CASE WHEN status = 'approved' THEN amount ELSE 0 END) as approved_amount,
+        SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) as pending_amount,
+        SUM(CASE WHEN status = 'rejected' THEN amount ELSE 0 END) as rejected_amount
+      FROM expenses
+      WHERE MONTH(date) = ? AND YEAR(date) = ?
+      GROUP BY category
+    `, [month, year]);
+
+    // Get total summary
+    const [total] = await connection.execute(`
+      SELECT 
+        COUNT(*) as total_count,
+        SUM(amount) as total_amount,
+        SUM(CASE WHEN status = 'approved' THEN amount ELSE 0 END) as approved_total,
+        SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) as pending_total,
+        SUM(CASE WHEN status = 'rejected' THEN amount ELSE 0 END) as rejected_total
+      FROM expenses
+      WHERE MONTH(date) = ? AND YEAR(date) = ?
+    `, [month, year]);
+
+    // Get detailed list
+    const [details] = await connection.execute(`
+      SELECT e.*, 
+             emp.first_name, emp.last_name, emp.employee_id, emp.department
+      FROM expenses e
+      LEFT JOIN employees emp ON e.employee_id = emp.id
+      WHERE MONTH(e.date) = ? AND YEAR(e.date) = ?
+      ORDER BY e.date DESC
+    `, [month, year]);
+
+    connection.release();
+
+    res.json({
+      summary: summary,
+      total: total[0],
+      details: details
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 export default router;

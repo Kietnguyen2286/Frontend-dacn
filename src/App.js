@@ -9,7 +9,11 @@ import AddEmployee from './pages/admin/AddEmployee';
 import EmployeeDetail from './pages/admin/EmployeeDetail';
 import LeaveManagement from './pages/admin/LeaveManagement';
 import ExpenseManagement from './pages/admin/ExpenseManagement';
+import ExpenseApproval from './pages/admin/ExpenseApproval';
+import ReportExpense from './pages/admin/ReportExpense';
 import SalaryManagement from './pages/admin/SalaryManagement';
+import SalaryCalculate from './pages/admin/SalaryCalculate';
+import ReportSalary from './pages/admin/ReportSalary';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import EmployeeLeaves from './pages/employee/EmployeeLeaves';
 import AttendanceHistory from './pages/employee/AttendanceHistory';
@@ -86,10 +90,42 @@ function App() {
             }
           />
           <Route
+            path="/admin/expenses/approval"
+            element={
+              <ProtectedRoute role="admin">
+                <ExpenseApproval />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/expenses/report"
+            element={
+              <ProtectedRoute role="admin">
+                <ReportExpense />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin/salary"
             element={
               <ProtectedRoute role="admin">
                 <SalaryManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/salary/calculate"
+            element={
+              <ProtectedRoute role="admin">
+                <SalaryCalculate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/salary/report"
+            element={
+              <ProtectedRoute role="admin">
+                <ReportSalary />
               </ProtectedRoute>
             }
           />
