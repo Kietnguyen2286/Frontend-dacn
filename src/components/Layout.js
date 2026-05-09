@@ -3,9 +3,9 @@ import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       <Sidebar />
-      <div className="flex-1 p-8 overflow-y-auto">
+      <div className="ml-64 p-8 overflow-y-auto" style={{minHeight: '100vh'}}>
         <div className="max-w-7xl mx-auto animate-fadeIn">
           {children}
         </div>

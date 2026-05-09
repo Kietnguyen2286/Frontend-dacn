@@ -36,11 +36,12 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         return { success: true, user: response.user };
       } else {
-        setError(response.message);
-        return { success: false, message: response.message };
+        const errorMsg = response.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+        setError(errorMsg);
+        return { success: false, message: errorMsg };
       }
     } catch (err) {
-      const errorMsg = 'Failed to login. Please try again.';
+      const errorMsg = err.message || 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối internet.';
       setError(errorMsg);
       return { success: false, message: errorMsg };
     }

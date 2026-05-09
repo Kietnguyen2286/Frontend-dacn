@@ -4,11 +4,18 @@ import { useAuth } from '../context/AuthContext';
 import { LogIn, Users, Lock } from 'lucide-react';
 
 const Login = () => {
+  const [mode, setMode] = useState('login'); // 'login' or 'register'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
   const { login, user } = useAuth();
+
+  // Register form state
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   // Redirect if already logged in
   React.useEffect(() => {
@@ -17,30 +24,107 @@ const Login = () => {
     }
   }, [user, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
-    const result = login(username, password);
-    if (result.success) {
-      navigate(`/${result.user.role}`);
-    } else {
-      setError(result.message);
-    }
-  };
-
-  const handleDemo = (role) => {
-    const creds = role === 'admin' 
-      ? { username: 'admin', password: 'admin123' }
-      : { username: 'employee', password: 'emp123' };
-    setUsername(creds.username);
-    setPassword(creds.password);
-    setTimeout(() => {
-      const result = login(creds.username, creds.password);
-      if (result.success) {
-        navigate(`/${result.user.role}`);
+    if (mode === 'login') {
+      // Login validation
+      if (!username.trim()) {
+        setError('Vui lòng nhập tên đăng nhập');
+        return;
       }
-    }, 100);
+      if (!password.trim()) {
+        setError('Vui lòng nhập mật khẩu');
+        return;
+      }
+
+      try {
+        const result = await login(username, password);
+        if (result.success) {
+          navigate(`/${result.user.role}`);
+        } else {
+          setError(result.message || 'Đăng nhập thất bại');
+        }
+      } catch (err) {
+        setError(err.message || 'Lỗi không xác định');
+      }
+    } else {
+      // Register validation
+      if (!fullName.trim()) {
+        setError('Vui lòng nhập họ tên');
+        return;
+      }
+      if (!email.trim()) {
+        setError('Vui lòng nhập email');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError('Email không hợp lệ');
+        return;
+      }
+      if (!username.trim()) {
+        setError('Vui lòng nhập tên đăng nhập');
+        return;
+      }
+      if (username.length < 3) {
+        setError('Tên đăng nhập phải có ít nhất 3 ký tự');
+        return;
+      }
+      if (!password.trim()) {
+        setError('Vui lòng nhập mật khẩu');
+        return;
+      }
+      if (password.length < 6) {
+        setError('Mật khẩu phải có ít nhất 6 ký tự');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError('Mật khẩu xác nhận không khớp');
+        return;
+      }
+
+      // Send registration to backend
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+        const response = await fetch(`${apiUrl}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            password,
+            fullName,
+            email,
+            role: 'employee'
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError(data.message || 'Đăng ký thất bại');
+          return;
+        }
+
+        setSuccess(`Đăng ký thành công! Vui lòng kiểm tra email ${email} để xác nhận tài khoản.`);
+        
+        // Reset form
+        setTimeout(() => {
+          setFullName('');
+          setEmail('');
+          setUsername('');
+          setPassword('');
+          setConfirmPassword('');
+          setMode('login');
+          setSuccess('');
+        }, 3000);
+      } catch (err) {
+        setError('Lỗi đăng ký: ' + (err.message || 'Không xác định'));
+      }
+    }
   };
 
   return (
@@ -58,10 +142,48 @@ const Login = () => {
           </div>
         </div>
         
-        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">Đăng Nhập</h1>
+        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          {mode === 'login' ? 'Đăng Nhập' : 'Đăng Ký'}
+        </h1>
         <p className="text-center text-gray-500 mb-8">Hệ thống Quản lý Nhân viên</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Full Name (Register only) */}
+          {mode === 'register' && (
+            <div className="group">
+              <label htmlFor="fullname" className="block text-sm font-semibold text-gray-700 mb-2">
+                Họ tên
+              </label>
+              <input
+                id="fullname"
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+                placeholder="Nhập họ tên"
+                required={mode === 'register'}
+              />
+            </div>
+          )}
+
+          {/* Email (Register only) */}
+          {mode === 'register' && (
+            <div className="group">
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+                placeholder="Nhập email"
+                required={mode === 'register'}
+              />
+            </div>
+          )}
+
           {/* Username */}
           <div className="group">
             <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -100,10 +222,38 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Error */}
+          {/* Confirm Password (Register only) */}
+          {mode === 'register' && (
+            <div className="group">
+              <label htmlFor="confirmpassword" className="block text-sm font-semibold text-gray-700 mb-2">
+                Xác nhận mật khẩu
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+                <input
+                  id="confirmpassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+                  placeholder="Nhập lại mật khẩu"
+                  required={mode === 'register'}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Error Message */}
           {error && (
             <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg animate-shake">
               {error}
+            </div>
+          )}
+
+          {/* Success Message */}
+          {success && (
+            <div className="bg-green-50 border-2 border-green-200 text-green-700 px-4 py-3 rounded-lg animate-slideUp">
+              {success}
             </div>
           )}
 
@@ -112,27 +262,33 @@ const Login = () => {
             type="submit"
             className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-200 font-semibold transform hover:scale-105 active:scale-95"
           >
-            Đăng Nhập
+            {mode === 'login' ? 'Đăng Nhập' : 'Đăng Ký'}
           </button>
         </form>
 
-        {/* Demo Buttons */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-center text-sm text-gray-600 mb-4 font-medium">Tài khoản mẫu:</p>
-          <div className="grid grid-cols-2 gap-3">
+        {/* Toggle Mode */}
+        <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+          <p className="text-gray-600 mb-4">
+            {mode === 'login' 
+              ? 'Chưa có tài khoản? ' 
+              : 'Đã có tài khoản? '}
             <button
-              onClick={() => handleDemo('admin')}
-              className="p-3 bg-gradient-to-br from-blue-100 to-indigo-100 text-indigo-700 rounded-lg hover:shadow-md transition-all duration-200 font-semibold text-sm transform hover:scale-105"
+              type="button"
+              onClick={() => {
+                setMode(mode === 'login' ? 'register' : 'login');
+                setError('');
+                setSuccess('');
+                setUsername('');
+                setPassword('');
+                setFullName('');
+                setEmail('');
+                setConfirmPassword('');
+              }}
+              className="text-indigo-600 font-semibold hover:text-indigo-700 underline"
             >
-              Admin
+              {mode === 'login' ? 'Đăng ký ngay' : 'Đăng nhập'}
             </button>
-            <button
-              onClick={() => handleDemo('employee')}
-              className="p-3 bg-gradient-to-br from-green-100 to-emerald-100 text-green-700 rounded-lg hover:shadow-md transition-all duration-200 font-semibold text-sm transform hover:scale-105"
-            >
-              Nhân viên
-            </button>
-          </div>
+          </p>
         </div>
       </div>
 
@@ -152,11 +308,24 @@ const Login = () => {
           25% { transform: translateX(-5px); }
           75% { transform: translateX(5px); }
         }
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
         .animate-fadeInScale {
           animation: fadeInScale 0.5s ease-out;
         }
         .animate-shake {
           animation: shake 0.3s ease-in-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.4s ease-out;
         }
       `}</style>
     </div>

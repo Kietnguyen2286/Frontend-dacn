@@ -1,14 +1,26 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Remove trailing slash from API_BASE_URL to avoid double slashes
+const API_BASE_URL = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+
+// Debug logging
+if (typeof window !== 'undefined') {
+  console.log('🔍 DEBUG: REACT_APP_API_URL =', process.env.REACT_APP_API_URL);
+  console.log('🔍 DEBUG: API_BASE_URL =', API_BASE_URL);
+}
 
 const ApiService = {
   // Auth endpoints
   login: async (username, password) => {
+    console.log('📤 Sending login request to:', `${API_BASE_URL}/auth/login`);
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-    return response.json();
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Đăng nhập thất bại');
+    }
+    return data;
   },
 
   register: async (username, password, name, role) => {

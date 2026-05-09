@@ -13,9 +13,34 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const FRONTEND_URL = (process.env.FRONTEND_URL || '').replace(/\/$/, '');
+
+const allowedOrigins = new Set(
+  [
+    FRONTEND_URL,
+    'https://fantastic-quietude-production.up.railway.app',
+    'https://ravishing-enjoyment-production.up.railway.app',
+    'https://testdacn.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ].filter(Boolean)
+);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+};
 
 // Middleware
-app.use(cors());
+// Configure CORS
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use((req, res, next) => { console.log('[' + new Date().toISOString() + '] ' + req.method + ' ' + req.url); next(); });
 

@@ -1,13 +1,20 @@
+-- Delete existing database and create a new one
+DROP DATABASE IF EXISTS railway;
+-- Create Database
+CREATE DATABASE IF NOT EXISTS railway CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE railway;
+
 -- Users Table
 CREATE TABLE IF NOT EXISTS users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE,
   role ENUM('admin', 'employee') DEFAULT 'employee',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Employees Table
 CREATE TABLE IF NOT EXISTS employees (
@@ -26,7 +33,7 @@ CREATE TABLE IF NOT EXISTS employees (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Leaves Table
 CREATE TABLE IF NOT EXISTS leaves (
@@ -40,7 +47,7 @@ CREATE TABLE IF NOT EXISTS leaves (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Attendance Table
 CREATE TABLE IF NOT EXISTS attendance (
@@ -52,12 +59,12 @@ CREATE TABLE IF NOT EXISTS attendance (
   status ENUM('present', 'absent', 'late', 'half-day') DEFAULT 'present',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Salaries Table
 CREATE TABLE IF NOT EXISTS salaries (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  employee_id INT NOT NULL UNIQUE,
+  employee_id INT NOT NULL,
   base_salary DECIMAL(10, 2) NOT NULL,
   allowances DECIMAL(10, 2) DEFAULT 0,
   deductions DECIMAL(10, 2) DEFAULT 0,
@@ -65,7 +72,7 @@ CREATE TABLE IF NOT EXISTS salaries (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Expenses Table
 CREATE TABLE IF NOT EXISTS expenses (
@@ -79,7 +86,7 @@ CREATE TABLE IF NOT EXISTS expenses (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- KPI Table
 CREATE TABLE IF NOT EXISTS kpis (
@@ -92,7 +99,7 @@ CREATE TABLE IF NOT EXISTS kpis (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Work History Table
 CREATE TABLE IF NOT EXISTS work_history (
@@ -106,7 +113,7 @@ CREATE TABLE IF NOT EXISTS work_history (
   reason TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-);
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create indexes for better query performance
 CREATE INDEX idx_employees_user_id ON employees(user_id);
@@ -117,7 +124,6 @@ CREATE INDEX idx_expenses_employee_id ON expenses(employee_id);
 CREATE INDEX idx_kpis_employee_id ON kpis(employee_id);
 CREATE INDEX idx_work_history_employee_id ON work_history(employee_id);
 
--- Insert sample admin user (password: admin123)
 INSERT INTO users (username, password_hash, name, role) 
 VALUES ('admin', '$2a$10$2QakONQqxZfpi5QhTH/AR.PFoaL9talll2u3Nym4uK3g9/qP/X/UW', 'Administrator', 'admin');
 

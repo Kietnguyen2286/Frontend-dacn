@@ -16,6 +16,26 @@ router.get('/', verifyToken, verifyRole(['admin']), async (req, res) => {
   }
 });
 
+// Get current employee profile (from JWT token)
+router.get('/profile/me', verifyToken, async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute(
+      'SELECT * FROM employees WHERE user_id = ?',
+      [req.user.id]
+    );
+    connection.release();
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Employee profile not found' });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 // Get employee by ID
 router.get('/:id', verifyToken, async (req, res) => {
   try {

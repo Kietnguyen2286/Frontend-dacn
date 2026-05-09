@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
+import AccountManagement from './pages/AccountManagement';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import EmployeeList from './pages/admin/EmployeeList';
 import AddEmployee from './pages/admin/AddEmployee';
@@ -11,7 +12,6 @@ import ExpenseManagement from './pages/admin/ExpenseManagement';
 import SalaryManagement from './pages/admin/SalaryManagement';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import EmployeeLeaves from './pages/employee/EmployeeLeaves';
-import TimeTracking from './pages/employee/TimeTracking';
 import AttendanceHistory from './pages/employee/AttendanceHistory';
 import WorkHistory from './pages/admin/WorkHistory';
 import KPIManagement from './pages/admin/KPIManagement';
@@ -25,6 +25,16 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          
+          {/* Account Management - Available for all authenticated users */}
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <AccountManagement />
+              </ProtectedRoute>
+            }
+          />
           
           {/* Admin Routes */}
           <Route
@@ -114,14 +124,6 @@ function App() {
             element={
               <ProtectedRoute role="employee">
                 <EmployeeLeaves />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employee/time-tracking"
-            element={
-              <ProtectedRoute role="employee">
-                <TimeTracking />
               </ProtectedRoute>
             }
           />
