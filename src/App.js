@@ -8,6 +8,7 @@ import EmployeeList from './pages/admin/EmployeeList';
 import AddEmployee from './pages/admin/AddEmployee';
 import EmployeeDetail from './pages/admin/EmployeeDetail';
 import LeaveManagement from './pages/admin/LeaveManagement';
+import LeaveApproval from './pages/admin/LeaveApproval';
 import ExpenseManagement from './pages/admin/ExpenseManagement';
 import ExpenseApproval from './pages/admin/ExpenseApproval';
 import ReportExpense from './pages/admin/ReportExpense';
@@ -78,6 +79,14 @@ function App() {
             element={
               <ProtectedRoute role="admin">
                 <LeaveManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/leaves/approval"
+            element={
+              <ProtectedRoute role="admin">
+                <LeaveApproval />
               </ProtectedRoute>
             }
           />

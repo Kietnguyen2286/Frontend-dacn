@@ -40,6 +40,25 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
+// Get pending leaves for approval
+router.get('/approval/pending', verifyToken, verifyRole(['admin']), async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute(
+      `SELECT l.*, e.name as employee_name, e.employee_id, e.department 
+       FROM leaves l 
+       JOIN employees e ON l.employee_id = e.id 
+       WHERE l.status = 'pending'
+       ORDER BY l.created_at DESC`
+    );
+    connection.release();
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 // Approve/Reject leave (admin only)
 router.put('/:id', verifyToken, verifyRole(['admin']), async (req, res) => {
   const { status } = req.body;

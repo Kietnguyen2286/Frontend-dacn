@@ -11,7 +11,12 @@ const KPIManagement = () => {
   const [message, setMessage] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [selectedKPI, setSelectedKPI] = useState(null);
+  const [editForm, setEditForm] = useState({
+    target: '',
+    actual: ''
+  });
   const [createForm, setCreateForm] = useState({
     employee_id: '',
     metric: '',
@@ -108,10 +113,52 @@ const KPIManagement = () => {
       });
       const data = await response.json();
       setSelectedKPI(data);
+      setEditForm({
+        target: data.target,
+        actual: data.actual || 0
+      });
+      setIsEditMode(false);
       setShowDetailModal(true);
     } catch (error) {
       console.error('Error fetching KPI detail:', error);
       setMessage('❌ Lỗi khi tải thông tin KPI');
+    }
+  };
+
+  const handleUpdateKPI = async () => {
+    if (!editForm.target || editForm.actual === '') {
+      setMessage('❌ Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/kpis/${selectedKPI.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          target: parseFloat(editForm.target),
+          actual: parseFloat(editForm.actual)
+        })
+      });
+
+      if (response.ok) {
+        setMessage('✅ Cập nhật KPI thành công!');
+        setIsEditMode(false);
+        fetchKPIs();
+        setTimeout(() => {
+          setShowDetailModal(false);
+          setMessage('');
+        }, 1500);
+      } else {
+        setMessage('❌ Lỗi khi cập nhật KPI');
+      }
+    } catch (error) {
+      console.error('Error updating KPI:', error);
+      setMessage('❌ Lỗi: ' + error.message);
     }
   };
 
@@ -426,9 +473,12 @@ const KPIManagement = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
               <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 flex items-center justify-between rounded-t-lg">
-                <h3 className="text-xl font-bold text-white">Chi Tiết KPI</h3>
+                <h3 className="text-xl font-bold text-white">{isEditMode ? 'Chỉnh Sửa KPI' : 'Chi Tiết KPI'}</h3>
                 <button
-                  onClick={() => setShowDetailModal(false)}
+                  onClick={() => {
+                    setShowDetailModal(false);
+                    setIsEditMode(false);
+                  }}
                   className="p-2 hover:bg-blue-500 rounded-lg transition"
                 >
                   <X className="w-6 h-6 text-white" />
@@ -447,42 +497,96 @@ const KPIManagement = () => {
                   <p className="text-lg font-bold text-gray-800">{selectedKPI.metric}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600">Mục Tiêu</p>
-                    <p className="text-2xl font-bold text-blue-600">{selectedKPI.target}</p>
+                {isEditMode ? (
+                  <div className="space-y-3 border-t pt-4">
+                    <div>
+                      <label className="text-sm text-gray-600 font-medium">Mục Tiêu</label>
+                      <input
+                        type="number"
+                        value={editForm.target}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, target: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mt-1"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600 font-medium">Thực Tế</label>
+                      <input
+                        type="number"
+                        value={editForm.actual}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, actual: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mt-1"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Thực Tế</p>
-                    <p className="text-2xl font-bold text-green-600">{selectedKPI.actual || 0}</p>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Mục Tiêu</p>
+                      <p className="text-2xl font-bold text-blue-600">{selectedKPI.target}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Thực Tế</p>
+                      <p className="text-2xl font-bold text-green-600">{selectedKPI.actual || 0}</p>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600 mb-2">Hoàn Thành</p>
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 bg-gray-200 rounded-full h-8 overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
-                        style={{ width: `${Math.min(((selectedKPI.actual || 0) / selectedKPI.target * 100), 100)}%` }}
-                      >
-                        {Math.round((selectedKPI.actual || 0) / selectedKPI.target * 100)}%
+                {!isEditMode && (
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-2">Hoàn Thành</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 bg-gray-200 rounded-full h-8 overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold"
+                          style={{ width: `${Math.min(((selectedKPI.actual || 0) / selectedKPI.target * 100), 100)}%` }}
+                        >
+                          {Math.round((selectedKPI.actual || 0) / selectedKPI.target * 100)}%
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 <div>
                   <p className="text-sm text-gray-600">Kỳ</p>
                   <p className="text-lg font-medium text-gray-800">{selectedKPI.period}</p>
                 </div>
 
-                <button
-                  onClick={() => setShowDetailModal(false)}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
-                >
-                  Đóng
-                </button>
+                <div className="flex space-x-3 pt-4 border-t">
+                  {isEditMode ? (
+                    <>
+                      <button
+                        onClick={() => setIsEditMode(false)}
+                        className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+                      >
+                        Hủy
+                      </button>
+                      <button
+                        onClick={handleUpdateKPI}
+                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition flex items-center justify-center gap-2"
+                      >
+                        <Save className="w-5 h-5" />
+                        Lưu
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setIsEditMode(true)}
+                        className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition flex items-center justify-center gap-2"
+                      >
+                        <Edit2 className="w-5 h-5" />
+                        Chỉnh Sửa
+                      </button>
+                      <button
+                        onClick={() => setShowDetailModal(false)}
+                        className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+                      >
+                        Đóng
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -47,7 +47,14 @@ const Sidebar = () => {
     ? [
         { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/admin/employees', icon: Users, label: 'Nhân Viên' },
-        { path: '/admin/leaves', icon: Calendar, label: 'Nghỉ Phép' },
+        { 
+          icon: Calendar, 
+          label: 'Nghỉ Phép', 
+          submenu: [
+            { path: '/admin/leaves', label: 'Quản Lý Nghỉ Phép' },
+            { path: '/admin/leaves/approval', label: 'Duyệt Nghỉ Phép' },
+          ]
+        },
         { 
           icon: Wallet, 
           label: 'Chi Phí', 
