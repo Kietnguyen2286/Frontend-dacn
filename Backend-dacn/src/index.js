@@ -8,6 +8,7 @@ import attendanceRouter from './routes/attendance.js';
 import salaryRouter from './routes/salary.js';
 import expenseRouter from './routes/expenses.js';
 import kpiRouter from './routes/kpi.js';
+import workHistoryRouter from './routes/work_history.js';
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ app.use('/api/attendance', attendanceRouter);
 app.use('/api/salary', salaryRouter);
 app.use('/api/expenses', expenseRouter);
 app.use('/api/kpi', kpiRouter);
+app.use('/api/work-history', workHistoryRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
